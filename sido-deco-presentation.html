@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Architecture d'Intérieur Freelance – Sido Déco</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+<style>
+/* ═══════════════════════════════════════════════════
+   THEME — Design Intérieur : Rose Mauve + Or Chaud
+   ═══════════════════════════════════════════════════ */
+:root {
+  --c-primary:       #7b2455;
+  --c-primary-mid:   #b03070;
+  --c-primary-light: #fdf2f7;
+  --c-accent:        #d4821a;
+  --c-accent-light:  #fef6ec;
+  --c-info:          #2d6bcf;
+  --c-info-light:    #e8f0fe;
+  --c-danger:        #c0392b;
+  --c-warning:       #e67e22;
+  --c-success:       #1e8449;
+  --c-success-light: #e9f7ef;
+  --c-bg:        #f8f4f6;
+  --c-surface:   #ffffff;
+  --c-border:    #ecdde6;
+  --c-text:      #1e1829;
+  --c-text-mute: #7a6278;
+  --radius:  10px;
+  --shadow:  0 2px 10px rgba(123,36,85,.08);
+  --max-w:   1080px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--c-bg);
+  color: var(--c-text);
+  font-size: 15px;
+  line-height: 1.7;
+}
+a { color: var(--c-primary-mid); }
+img { max-width: 100%; }
+
+.top-nav {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--c-primary);
+  display: flex; align-items: center; gap: 8px;
+  padding: 0 32px;
+  height: 52px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.2);
+  overflow-x: auto;
+}
+.top-nav a {
+  color: rgba(255,255,255,.82);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: background .15s;
+}
+.top-nav a:hover { background: rgba(255,255,255,.15); color: #fff; }
+.top-nav .sep { color: rgba(255,255,255,.3); font-size: 11px; }
+
+header.hero {
+  background: linear-gradient(135deg, #7b2455 0%, #b03070 60%, #c94b89 100%);
+  color: white;
+  padding: 56px 40px 48px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+header.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.hero-logo {
+  display: inline-block;
+  font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  background: rgba(255,255,255,.15);
+  border: 1px solid rgba(255,255,255,.3);
+  padding: 4px 16px; border-radius: 20px;
+  margin-bottom: 20px;
+}
+header.hero h1 {
+  font-size: clamp(28px, 5vw, 46px);
+  font-weight: 800;
+  letter-spacing: -.5px;
+  line-height: 1.15;
+  margin-bottom: 14px;
+}
+header.hero .subtitle {
+  font-size: 17px;
+  opacity: .88;
+  max-width: 660px;
+  margin: 0 auto 24px;
+}
+.hero-meta {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 16px;
+  font-size: 13px; opacity: .8;
+}
+.hero-meta span { display: flex; align-items: center; gap: 5px; }
+
+.page { max-width: var(--max-w); margin: 0 auto; padding: 0 20px 60px; }
+
+section.block {
+  background: var(--c-surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 32px 36px;
+  margin-top: 24px;
+  border: 1px solid var(--c-border);
+}
+section.block h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--c-primary);
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--c-primary-light);
+  margin-bottom: 20px;
+  display: flex; align-items: center; gap: 10px;
+}
+section.block h2 .num {
+  background: var(--c-primary);
+  color: white;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 800;
+  flex-shrink: 0;
+}
+section.block h3 {
+  font-size: 15px; font-weight: 600;
+  color: var(--c-primary-mid);
+  margin: 18px 0 8px;
+}
+section.block p { margin-bottom: 10px; }
+section.block ul, section.block ol { padding-left: 22px; margin-bottom: 10px; }
+section.block li { margin-bottom: 5px; }
+
+.kpi-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+}
+.kpi {
+  background: var(--c-primary-light);
+  border-left: 4px solid var(--c-primary);
+  border-radius: var(--radius);
+  padding: 18px 16px;
+  text-align: center;
+}
+.kpi .kpi-val {
+  font-size: 26px; font-weight: 800;
+  color: var(--c-primary);
+  line-height: 1.1;
+}
+.kpi .kpi-label {
+  font-size: 12px; color: var(--c-text-mute);
+  margin-top: 4px;
+  text-transform: uppercase; letter-spacing: .5px;
+}
+
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 16px; }
+.card {
+  background: var(--c-bg);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  padding: 18px;
+}
+.card h3 { font-size: 14px; font-weight: 700; color: var(--c-primary); margin: 0 0 8px; }
+.card p, .card li { font-size: 13.5px; }
+.card ul { padding-left: 16px; }
+
+.box { padding: 16px 20px; border-radius: var(--radius); margin: 14px 0; font-size: 14px; }
+.box-accent   { background: var(--c-accent-light);  border-left: 4px solid var(--c-accent); }
+.box-info     { background: var(--c-info-light);    border-left: 4px solid var(--c-info); }
+.box-success  { background: var(--c-success-light); border-left: 4px solid var(--c-success); }
+.box-warning  { background: #fff3e0;                border-left: 4px solid var(--c-warning); }
+.box strong   { display: block; margin-bottom: 4px; }
+
+.badge {
+  display: inline-block;
+  padding: 2px 12px; border-radius: 20px;
+  font-size: 12px; font-weight: 600;
+}
+.badge-primary { background: var(--c-primary);  color: white; }
+.badge-accent  { background: var(--c-accent);   color: white; }
+.badge-success { background: var(--c-success);  color: white; }
+.badge-muted   { background: var(--c-border);   color: var(--c-text-mute); }
+
+.tbl { width: 100%; border-collapse: collapse; margin-top: 14px; font-size: 14px; }
+.tbl th, .tbl td { border: 1px solid var(--c-border); padding: 10px 14px; text-align: left; }
+.tbl thead th { background: var(--c-primary); color: white; font-weight: 600; }
+.tbl tbody tr:nth-child(even) { background: var(--c-bg); }
+.tbl tfoot td, .tbl tfoot th { background: var(--c-primary-light); font-weight: 700; color: var(--c-primary); }
+.tbl .risk-high   { color: var(--c-danger);  font-weight: 700; }
+.tbl .risk-med    { color: var(--c-warning); font-weight: 700; }
+.tbl .risk-low    { color: var(--c-success); font-weight: 700; }
+
+.timeline { list-style: none; padding: 0; position: relative; margin-top: 16px; }
+.timeline::before {
+  content: ''; position: absolute; left: 18px; top: 0; bottom: 0;
+  width: 2px; background: var(--c-border);
+}
+.timeline li {
+  display: flex; gap: 20px; align-items: flex-start;
+  padding: 0 0 24px 0; position: relative;
+}
+.tl-dot {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: var(--c-primary); color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 12px;
+  flex-shrink: 0; position: relative; z-index: 1;
+}
+.tl-content { padding-top: 6px; }
+.tl-content h4 { font-size: 14px; font-weight: 700; color: var(--c-primary); }
+.tl-content .tl-period { font-size: 12px; color: var(--c-text-mute); margin-bottom: 4px; }
+.tl-content p { font-size: 13.5px; }
+
+.progress-list { list-style: none; padding: 0; }
+.progress-item { margin-bottom: 12px; }
+.progress-label { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px; }
+.progress-bar { height: 8px; background: var(--c-border); border-radius: 4px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--c-primary), var(--c-primary-mid)); border-radius: 4px; }
+
+.swot {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+  border: 1px solid var(--c-border); border-radius: var(--radius);
+  overflow: hidden; margin-top: 16px;
+}
+.swot-cell { padding: 20px; }
+.swot-cell h4 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; margin-bottom: 10px; }
+.swot-cell ul { padding-left: 18px; font-size: 13.5px; }
+.swot-cell li { margin-bottom: 4px; }
+.swot-s { background: #e9f7ef; border-right: 1px solid var(--c-border); border-bottom: 1px solid var(--c-border); }
+.swot-s h4 { color: #1e8449; }
+.swot-w { background: #fff3e0; border-bottom: 1px solid var(--c-border); }
+.swot-w h4 { color: #b7500a; }
+.swot-o { background: #e8f0fe; border-right: 1px solid var(--c-border); }
+.swot-o h4 { color: #2d6bcf; }
+.swot-t { background: #fdecea; }
+.swot-t h4 { color: #c0392b; }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 8px; }
+@media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
+
+.fin-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0; border-bottom: 1px solid var(--c-border);
+  font-size: 14px;
+}
+.fin-row:last-child { border-bottom: none; }
+.fin-row.total { font-weight: 700; color: var(--c-primary); padding-top: 12px; }
+
+.chart-wrap { position: relative; max-width: 100%; margin: 20px 0; }
+.chart-title {
+  font-size: 13px; font-weight: 600; color: var(--c-text-mute);
+  text-align: center; margin-bottom: 10px; text-transform: uppercase; letter-spacing: .5px;
+}
+.charts-row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 20px;
+  align-items: start;
+}
+@media (max-width: 700px) { .charts-row { grid-template-columns: 1fr; } }
+
+footer {
+  background: var(--c-primary);
+  color: rgba(255,255,255,.75);
+  text-align: center;
+  padding: 24px 20px;
+  font-size: 13px;
+  margin-top: 40px;
+}
+footer strong { color: white; }
+
+@media print {
+  .top-nav { display: none !important; }
+  body { background: white; font-size: 12px; }
+  section.block { break-inside: avoid; box-shadow: none; border: 1px solid #ddd; }
+  header.hero { break-after: page; }
+  .kpi-strip { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<nav class="top-nav" id="top-nav">
+  <a href="#exec-summary">Résumé</a><span class="sep">›</span>
+  <a href="#company">Vision</a><span class="sep">›</span>
+  <a href="#market">Marché</a><span class="sep">›</span>
+  <a href="#product">Services</a><span class="sep">›</span>
+  <a href="#business-model">Modèle éco.</a><span class="sep">›</span>
+  <a href="#competition">Concurrence</a><span class="sep">›</span>
+  <a href="#swot">SWOT</a><span class="sep">›</span>
+  <a href="#gtm">Go-To-Market</a><span class="sep">›</span>
+  <a href="#roadmap">Feuille de route</a><span class="sep">›</span>
+  <a href="#finance">Finances</a><span class="sep">›</span>
+  <a href="#risks">Risques</a><span class="sep">›</span>
+  <a href="#growth">Croissance</a><span class="sep">›</span>
+  <a href="#success-factors">Facteurs clés</a><span class="sep">›</span>
+  <a href="#conclusion">Conclusion</a>
+</nav>
+
+<header class="hero" id="top">
+  <p class="hero-logo">Sido Déco</p>
+  <h1>Architecture d'Intérieur Freelance</h1>
+  <p class="subtitle">Du concept créatif à la livraison clé en main — votre espace rêvé, réalisé sans stress.</p>
+  <div class="hero-meta">
+    <span>📍 Libreville, Gabon</span>
+    <span>🏠 Design Intérieur &amp; Maîtrise d'Œuvre</span>
+    <span>📅 Mars 2026</span>
+    <span>🎯 Particuliers &amp; Entreprises</span>
+  </div>
+</header>
+
+<div class="page">
+
+  <!-- ═══════════════════════════════════════════════
+       SECTION 1 — RÉSUMÉ EXÉCUTIF
+       ═══════════════════════════════════════════════ -->
+  <section class="block" id="exec-summary">
+    <h2><span class="num">1</span> Résumé Exécutif</h2>
+
+    <div class="kpi-strip">
+      <div class="kpi">
+        <div class="kpi-val">700K</div>
+        <div class="kpi-label">Investissement initial (FCFA est.)</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-val">22M</div>
+        <div class="kpi-label">CA cible Année 1 (FCFA est.)</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-val">~71%</div>
+        <div class="kpi-label">Marge nette estimée An 1</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-val">&lt; 1 mois</div>
+        <div class="kpi-label">Retour sur investissement</div>
+      </div>
+    </div>
+
+    <p style="margin-top:20px"><strong>Sido Déco</strong> est un studio freelance d'architecture d'intérieur implanté à Libreville, Gabon. Son concept repose sur une promesse simple mais rare sur le marché local : offrir à chaque client une conception sur-mesure élaborée par un professionnel formé, puis piloter la réalisation de A à Z en coordonnant un réseau de prestataires spécialisés — artisans, fournisseurs de mobilier, entreprises de travaux. Le fondateur joue le rôle de <em>maître d'œuvre</em>, garantissant cohérence créative, maîtrise du budget et livraison dans les délais.</p>
+
+    <p>La demande est soutenue à Libreville par un parc immobilier en croissance, une classe aisée dynamique (cadres gabonais, expatriés pétroliers, commerçants) et un tissu de PME et d'enseignes en quête d'espaces professionnels qualitatifs. Le marché reste largement informel et peu structuré, offrant un espace de différenciation considérable à un opérateur sérieux. Le PIB par habitant du Gabon atteint <strong>8 230 USD</strong> en 2024 (Banque Mondiale) — l'un des plus élevés d'Afrique subsaharienne — ce qui traduit un pouvoir d'achat propice aux services haut de gamme.</p>
+
+    <p>Avec un investissement de lancement ultra-lean de <strong>700 000 FCFA (est.)</strong>, Sido Déco vise un chiffre d'affaires de <strong>22 millions FCFA</strong> dès la première année, en montée en puissance vers <strong>70 millions FCFA</strong> à l'horizon 3 ans — sans locaux fixes ni masse salariale initiale.</p>
+
+    <div class="box box-accent">
+      <strong>Proposition de valeur clé</strong>
+      Sido Déco est l'interlocuteur unique qui transforme votre idée de décoration en espace réalisé — de la planche d'ambiance à la livraison des travaux, en coordonnant tous les prestataires à votre place, dans votre budget, sans mauvaise surprise.
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       SECTION 2 — ENTREPRISE & VISION
+       ═══════════════════════════════════════════════ -->
+  <section class="block" id="company">
+    <h2><span class="num">2</span> Entreprise &amp; Vision</h2>
+
+    <p><strong>Sido Déco</strong> est une entreprise freelance en cours de création à Libreville, opérant sous le statut d'entrepreneur individuel (profession libérale) conformément au droit gabonais, avec immatriculation à l'Agence Nationale de Promotion des Investissements (<strong>ANPI Gabon</strong>). La structure est délibérément légère : pas de locaux fixes, pas de charges salariales initiales, pour maximiser la marge et minimiser le risque à l'amorçage.</p>
+
+    <h3>Mission</h3>
+    <p>Transformer les espaces de vie et de travail à Libreville en environnements beaux, fonctionnels et reflets de l'identité de chaque client — en rendant accessible ce qui était réservé aux grands cabinets ou aux clients fortunés.</p>
+
+    <h3>Vision</h3>
+    <div class="two-col">
+      <div class="box box-info">
+        <strong>Court terme — 12 à 18 mois</strong>
+        Établir Sido Déco comme référence reconnue de l'architecture d'intérieur freelance à Libreville, avec un portfolio de 20+ projets livrés et une présence digitale active générant des leads organiques.
+      </div>
+      <div class="box box-accent">
+        <strong>Long terme — 3 à 5 ans</strong>
+        Développer un cabinet structuré avec un ou deux collaborateurs, étendre la prestation à l'ensemble du Gabon (Port-Gentil, Franceville) et rayonner sur la sous-région CEMAC.
+      </div>
+    </div>
+
+    <h3>Objectifs stratégiques</h3>
+    <ul>
+      <li>Réaliser <strong>15 à 20 projets</strong> dès la première année (résidentiel et commercial)</li>
+      <li>Constituer un réseau de <strong>10 prestataires fiables</strong> couvrant tous les corps de métier (menuiserie, peinture, électricité, plomberie, mobilier)</li>
+      <li>Atteindre <strong>500 abonnés Instagram qualifiés</strong> dans les 6 premiers mois grâce au contenu visuel</li>
+      <li>Fidéliser <strong>au moins 40% des clients</strong> sur un second projet ou une recommandation active</li>
+      <li>Atteindre la rentabilité <strong>dès le premier projet facturé</strong> grâce aux charges fixes quasi nulles</li>
+    </ul>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       SECTION 3 — OPPORTUNITÉ DE MARCHÉ
+       ═══════════════════════════════════════════════ -->
+  <section class="block" id="market">
+    <h2><span class="num">3</span> Opportunité de Marché</h2>
+
+    <p>Le Gabon affiche en 2024 un <strong>PIB de 20,9 milliards USD</strong> et un PIB par habitant de <strong>8 230 USD</strong> — classé « revenu intermédiaire supérieur » par la Banque Mondiale (source : World Bank Data, 2024). Avec un taux d'urbanisation de <strong>~87%</strong> et une capitale concentrant ~900 000 habitants, Libreville est l'épicentre d'une demande croissante pour des espaces de qualité.</p>
+
+    <div class="grid">
+      <div class="card">
+        <h3>🏗️ Boom immobilier</h3>
+        <p>Libreville connaît une croissance soutenue du parc résidentiel neuf — quartiers d'Angondjé, PK5-PK12, Owendo — avec des promoteurs actifs et des programmes de logements haut de gamme.</p>
+      </div>
+      <div class="card">
+        <h3>💼 Classe aisée dynamique</h3>
+        <p>Cadres et dirigeants gabonais, expatriés pétroliers (Total, Shell, Perenco), corps diplomatique et diaspora de retour constituent une clientèle solvable et exigeante sur la qualité des espaces.</p>
+      </div>
+      <div class="card">
+        <h3>📱 Influence des réseaux sociaux</h3>
+        <p>Pinterest, Instagram et TikTok ont profondément changé les attentes des clients : ils arrivent avec des références visuelles précises et cherchent quelqu'un capable de les concrétiser — pas juste un artisan.</p>
+      </div>
+      <div class="card">
+        <h3>🏪 Essor du tertiaire</h3>
+        <p>Multiplication de restaurants, hôtels, espaces de coworking, boutiques premium et bureaux d'entreprises à Libreville — tous ont besoin d'identités visuelles d'espace soignées.</p>
+      </div>
+      <div class="card">
+        <h3>⚡ Marché quasi vierge</h3>
+        <p>Quasi-absence d'acteurs spécialisés et formés en architecture d'intérieur stricto sensu. La plupart des clients font appel à des artisans sans direction créative ou à des cabinets généraux très onéreux.</p>
+      </div>
+      <div class="card">
+        <h3>🌐 72% connectés</h3>
+        <p>Le taux d'accès à internet au Gabon atteint 72% (Banque Mondiale, 2023), signifiant que la prospection digitale est un canal de génération de leads pleinement opérationnel à Libreville.</p>
+      </div>
+    </div>
+
+    <h3>Taille du marché (Architecture d'intérieur, Libreville)</h3>
+    <div class="chart-wrap" style="max-width:580px">
+      <canvas id="tamChart"></canvas>
+    </div>
+    <p style="font-size:12px;color:var(--c-text-mute);margin-top:-10px">
+      Valeurs en millions FCFA. TAM = marché global design &amp; rénovation intérieure Gabon (est. — connaissance interne) ; SAM = segments moyen-haut et luxe actifs à Libreville ; SOM = part réaliste Sido Déco Année 1.
+    </p>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       SECTION 4 — SERVICES PROPOSÉS
+       ═══════════════════════════════════════════════ -->
+  <section class="block" id="product">
+    <h2><span class="num">4</span> Services Proposés</h2>
+
+    <p>Sido Déco articule son offre autour de <strong>trois piliers complémentaires</strong> couvrant l'intégralité du parcours client, du premier brief à la livraison finale. Cette approche « tout-en-un » est la principale source de valeur ajoutée du studio.</p>
+
+    <div class="grid">
+      <div class="card">
+        <h3>✏️ Conception &amp; Design</h3>
+        <ul>
+          <li>Audit de l'espace et prise de brief client</li>
+          <li>Planches d'ambiance (moodboards) et palette matériaux/couleurs</li>
+          <li>Plans d'aménagement 2D et visualisations 3D</li>
+          <li>Sélection du mobilier, luminaires et accessoires décoratifs</li>
+          <li>Présentation formelle de la proposition créative</li>
+          <li>Corrections et validation avec le client</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>🔨 Coordination &amp; Maîtrise d'Œuvre</h3>
+        <ul>
+          <li>Constitution du réseau de prestataires adaptés au projet</li>
+          <li>Consultation, comparatifs de devis et négociation prestataires</li>
+          <li>Établissement du planning de chantier</li>
+          <li>Supervision hebdomadaire des travaux sur site</li>
+          <li>Contrôle qualité et conformité au projet initial</li>
+          <li>Réception des travaux et livraison client</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>💡 Conseil &amp; Accompagnement</h3>
+        <ul>
+          <li>Audit déco "Express" (1 à 2 heures, prestation conseil seule)</li>
+          <li>Accompagnement en achat mobilier (magasins + import)</li>
+          <li>Home Staging (mise en valeur pour vente ou location)</li>
+          <li>Conseil couleur et rafraîchissement d'espaces</li>
+          <li>Suivi post-livraison et petits ajustements décoratifs</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Grille tarifaire indicative</h3>
+    <table class="tbl" style="margin-top:12px">
+      <thead>
+        <tr><th>Prestation</th><th>Périmètre</th><th>Honoraires indicatifs</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Forfait Conception seule</strong></td>
+          <td>Brief + moodboard + plans 2D/3D + suivi commandes</td>
+          <td>500 000 – 1 500 000 FCFA</td>
+        </tr>
+        <tr>
+          <td><strong>Forfait Conception + Coordination</strong></td>
+          <td>Conception complète + maîtrise d'œuvre travaux</td>
+          <td>8 – 12% du budget travaux total</td>
+        </tr>
+        <tr>
+          <td><strong>Conseil Horaire</strong></td>
+          <td>Accompagnement ponctuel, audit, avis expert</td>
+          <td>30 000 – 50 000 FCFA / heure</td>
+        </tr>
+        <tr>
+          <td><strong>Home Staging</strong></td>
+          <td>Mise en valeur d'un bien immobilier (vente/location)</td>
+          <td>200 000 – 600 000 FCFA forfait</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="box box-info" style="margin-top:16px">
+      <strong>Avantage concurrentiel du modèle</strong>
+      Le client ne gère <em>aucun prestataire</em>. Il valide le concept, puis Sido Déco orchestre tout : plannings, relances artisans, contrôle qualité et livraison. Pour le client, c'est un gain de temps considérable et la garantie d'un résultat cohérent.
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       SECTION 5 — MODÈLE ÉCONOMIQUE
+       ═══════════════════════════════════════════════ -->
+  <section class="block" id="business-model">
+    <h2><span class="num">5</span> Modèle Économique</h2>
+
+    <h3>Sources de revenus</h3>
+    <div class="grid">
+      <div class="card">
+        <h3>1 — Honoraires de Conception</h3>
+        <p><strong>~40% du CA</strong></p>
+        <p>Forfait fixe par projet, établi au brief. Inclut toute la phase créative (moodboards, plans, rendus 3D). Facturé à 50% au démarrage, 50% à la validation.</p>
+      </div>
+      <div class="card">
+        <h3>2 — Honoraires de Coordination</h3>
+        <p><strong>~45% du CA</strong></p>
+        <p>Commissionnement sur le budget travaux (8–12%). Rémunère la gestion des prestataires, les visites de chantier et la livraison. Facturé en 3 tranches.</p>
+      </div>
+      <div class="card">
+        <h3>3 — Marge sur Sourcing</h3>
+        <p><strong>~15% du CA</strong></p>
+        <p>Marge sur mobilier et matériaux sourcés par le studio (achat grossiste/importation + revente client). Applicable quand le studio pré-finance les achats décoratifs.</p>
+      </div>
+    </div>
+
+    <h3>Économie unitaire</h3>
+    <table class="tbl" style="margin-top:12px">
+      <thead>
+        <tr><th>Type de projet</th><th>Budget travaux client</th><th>Honoraires Sido Déco</th><th>Durée projet</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Appartement moyen-haut (75–120 m²)</td>
+          <td>8 – 18M FCFA</td>
+          <td>800K – 2,2M FCFA</td>
+          <td>2 – 3 mois</td>
+        </tr>
+        <tr>
+          <td>Villa résidentielle (150–250 m²)</td>
+          <td>20 – 60M FCFA</td>
+          <td>2 – 7,2M FCFA</td>
+          <td>3 – 5 mois</td>
+        </tr>
+        <tr>
+          <td>Bureau/Commerce (50–150 m²)</td>
+          <td>10 – 30M FCFA</td>
+          <td>1 – 3,6M FCFA</td>
+          <td>2 – 4 mois</td>
+        </tr>
+        <tr>
+          <td>Restaurant/Hôtel (100–200 m²)</td>
+          <td>25 – 80M FCFA</td>
+          <td>2,5 – 9,6M FCFA</td>
+          <td>3 – 6 mois</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Modèle opérationnel</h3>
+    <ul>
+      <li><strong>Structure solo + réseau externe :</strong> le freelance est le seul employé ; les artisans et fournisseurs sont des prestataires indépendants payés directement ou via Sido Déco</li>
+      <li><strong>Travail hybride :</strong> bureau à domicile pour la conception, déplacements clients et chantier pour le suivi</li>
+      <li><strong>Outils :</strong> SketchUp / AutoCAD LT (plans), Canva Pro (moodboards), Adobe Suite (communication visuelle), Google Workspace (devis, contrats, suivi)</li>
+      <li><strong>Capacité simultanée :</strong> 3 à 5 projets à des phases différentes = charge optimale sans saturation</li>
+    </ul>
+
+    <h3>Acquisition clients</h3>
+    <ul>
+      <li>Bouche-à-oreille et réseau personnel (source principale en phase d'amorçage)</li>
+      <li>Instagram / Facebook : contenu visuel régulier — moodboards, avant/après, photos de chantier</li>
+      <li>LinkedIn : prospection des décideurs et PME librevilloises</li>
+      <li>Partenariats avec agents immobiliers, promoteurs et notaires</li>
+      <li>Référencement Google local : site web portfolio + fiche Google My Business</li>
+    </ul>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       SECTION 6 — PAYSAGE CONCURRENTIEL
+       ═══════════════════════════════════════════════ -->
+  <section class="block" id="competition">
+    <h2><span class="num">6</span> Paysage Concurrentiel</h2>
+
+    <p>Le marché de l'architecture d'intérieur à Libreville est <strong>peu structuré et très fragmenté</strong>. Il n'existe pas, à ce jour, d'acteur spécialisé offrant une prestation complète conception + maîtrise d'œuvre de manière formalisée et accessible. Sido Déco se positionne pour occuper cette niche.</p>
+
+    <h3>Concurrents directs et indirects</h3>
+    <div class="grid">
+      <div class="card">
+        <h3>Cabinets d'architecture généraliste</h3>
+        <p>Quelques cabinets gabonais ou expatriés proposent de l'architecture d'intérieur comme prestation annexe. Honoraires élevés (15–20% du budget), délais longs, approche formelle peu flexible. <span class="badge badge-muted">Concurrent indirect</span></p>
+      </div>
+      <div class="card">
+        <h3>Magasins d'ameublement</h3>
+        <p>CFAO Equipement, Galerie du Gabon, magasins libanais de mobilier proposent parfois un "conseil déco" limité à leur catalogue. Aucun suivi chantier, aucune vision globale de l'espace. <span class="badge badge-muted">Concurrent partiel</span></p>
+      </div>
+      <div class="card">
+        <h3>Décorateurs informels / artisans</h3>
+        <p>Maçons, peintres ou menuisiers se présentant comme "décorateurs". Prix bas, mais sans plans, sans gestion de projet, résultats aléatoires, aucune garantie. <span class="badge badge-muted">Concurrent bas de gamme</span></p>
+      </div>
+      <div class="card">
+        <h3>Designers freelance expatriés</h3>
+        <p>Quelques designers (français, belges, libanais) opèrent ponctuellement à Libreville. Compétences solides mais honoraires premium, pas ancrés localement, réseau prestataires limité. <span class="badge badge-muted">Concurrent premium</span></p>
+      </div>
+    </div>
+
+    <h3>Avantages différenciants de Sido Déco</h3>
+    <div class="box box-success">
+      <strong>Ce que Sido Déco fait mieux que tous ses concurrents réunis</strong>
+      <ol style="padding-left:20px;margin-top:6px">
+        <li><strong>Prestation bout en bout :</strong> du concept créatif à la livraison du chantier — personne d'autre ne propose ça de façon formalisée à Libreville</li>
+        <li><strong>Interlocuteur unique :</strong> le client n'a qu'un seul contact ; Sido Déco gère tous les prestataires</li>
+        <li><strong>Connaissance du tissu local :</strong> réseau d'artisans et fournisseurs gabonais soigneusement sélectionnés</li>
+        <li><strong>Proposition visuelle convaincante :</strong> rendus 3D et moodboards pour faire adhérer le client avant les travaux</li>
+        <li><strong>Accessible :</strong> honoraires inférieurs aux grands cabinets expatriés ; transparence totale sur les coûts</li>
+      </ol>
+    </div>
+
+    <h3>Positionnement concurrentiel</h3>
+    <div class="chart-wrap">
+      <canvas id="compChart"></canvas>
+    </div>
+    <p style="font-size:12px;color:var(--c-text-mute);margin-top:-8px">Score 0–100 sur les critères clés du secteur (évaluation interne). Un score élevé est favorable.</p>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       SECTION 7 — ANALYSE SWOT
+       ═══════════════════════════════════════════════ -->
+  <section class="block" id="swot">
+    <h2><span class="num">7</span> Analyse SWOT</h2>
+    <div class="swot">
+      <div class="swot-cell swot-s">
+        <h4>💪 Forces</h4>
+        <ul>
+          <li>Modèle tout-en-un (conception + réalisation) rare sur le marché librévillois</li>
+          <li>Investissement initial minimal → rentabilité quasi immédiate</li>
+          <li>Flexibilité et réactivité d'un freelance face à une structure lourde</li>
+          <li>Réseau de prestataires coordonné et maîtrisé comme avantage opérationnel</li>
+          <li>Propositions 3D visuelles — outil de vente puissant pour convaincre le client</li>
+          <li>Rôle de maître d'œuvre = position de confiance et de valeur ajoutée élevée</li>
+        </ul>
+      </div>
+      <div class="swot-cell swot-w">
+        <h4>⚠️ Faiblesses</h4>
+        <ul>
+          <li>Notoriété à construire : marque nouvelle, sans références ni portfolio initial connu</li>
+          <li>Capacité limitée à un individu → risque de saturation au-delà de 5 projets simultanés</li>
+          <li>Pas de showroom : certains clients veulent voir des réalisations physiques avant de signer</li>
+          <li>Dépendance à la qualité et à la disponibilité des prestataires du réseau</li>
+          <li>Cycle de vente long sur grands projets (3 à 6 semaines de décision client)</li>
+          <li>Trésorerie contrainte en cas de retard de paiement client</li>
+        </ul>
+      </div>
+      <div class="swot-cell swot-o">
+        <h4>🚀 Opportunités</h4>
+        <ul>
+          <li>Boom immobilier à Libreville (Angondjé, PK5-12, Owendo, Nzeng-Ayong)</li>
+          <li>Demande croissante des entreprises pour des espaces de travail qualitatifs</li>
+          <li>Instagram / TikTok comme vitrine gratuite : un profil bien alimenté génère des leads organiques</li>
+          <li>Quasi-absence de concurrents spécialisés → position de "first mover"</li>
+          <li>Partenariats avec promoteurs immobiliers, notaires, agences — prescription active</li>
+          <li>Essor des hôtels, restaurants et commerces de standing à Libreville</li>
+        </ul>
+      </div>
+      <div class="swot-cell swot-t">
+        <h4>🛑 Menaces</h4>
+        <ul>
+          <li>Sensibilisation insuffisante des clients au coût réel de l'architecture d'intérieur professionnelle</li>
+          <li>Retards ou malfaçons des prestataires → impact direct sur la réputation du studio</li>
+          <li>Instabilité politique post-transition 2023 → prudence accrue sur les investissements privés</li>
+          <li>Concurrence informelle sur les prix (de nombreux artisans se présentent comme "décorateurs")</li>
+          <li>Volatilité des revenus liés au pétrole — la clientèle aisée peut ralentir ses dépenses</li>
+          <li>Non-paiement ou litiges clients sur des projets longs sans contrat solide</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       SECTION 8 — STRATÉGIE COMMERCIALE
+       ═══════════════════════════════════════════════ -->
+  <section class="block" id="gtm">
+    <h2><span class="num">8</span> Stratégie Go-To-Market</h2>
+
+    <h3>Profil du client idéal</h3>
+    <div class="two-col">
+      <div class="box box-info">
+        <strong>Client Résidentiel</strong>
+        Propriétaire gabonais ou expatrié, 35–55 ans, revenus supérieurs à 500 000 FCFA/mois, ayant acquis ou rénové un bien de 80 m² et plus. Actif sur Instagram, sensible à l'esthétique, débordé professionnellement — il veut un résultat "clé en main" sans gérer les artisans lui-même.
+      </div>
+      <div class="box box-accent">
+        <strong>Client Entreprise</strong>
+        Dirigeant de PME, gérant de restaurant ou d'hôtel, responsable d'agence ou de boutique premium. Veut un espace professionnel qui reflète son image de marque et impressionne ses clients, dans un budget défini et un délai respectable.
+      </div>
+    </div>
+
+    <h3>Stratégie de canaux</h3>
+    <div class="grid">
+      <div class="card">
+        <h3>📸 Instagram / Facebook</h3>
+        <ul>
+          <li>3 publications par semaine : moodboards, visuels 3D, avant/après</li>
+          <li>Stories de chantier : créer de la confiance et du suivi</li>
+          <li>100 000 FCFA de publicité sponsorisée ciblée Libreville</li>
+          <li>Hashtags : #ArchitectureInterieurGabon #DecoLibreville</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>🌐 Site Web Portfolio</h3>
+        <ul>
+          <li>Portfolio professionnel avec photos haute qualité</li>
+          <li>Référencement Google local : "architecte intérieur Libreville"</li>
+          <li>Fiche Google My Business avec avis clients</li>
+          <li>Formulaire de contact et demande de devis en ligne</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>🤝 Réseau &amp; Partenariats</h3>
+        <ul>
+          <li>3 premiers projets via le réseau personnel et familial</li>
+          <li>Partenariats avec 3–5 agences immobilières de Libreville</li>
+          <li>Collaboration avec promoteurs (Sogepave, Olam Real Estate, etc.)</li>
+          <li>Prescription par artisans partenaires (système de recommandation mutuelle)</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>💼 LinkedIn</h3>
+        <ul>
+          <li>Ciblage des directeurs généraux, DRH et responsables d'agence</li>
+          <li>Publications sur les tendances design d'espace de travail Afrique</li>
+          <li>Approche directe des PME locales</li>
+          <li>Mise en avant de cas clients B2B</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Plan de lancement — 30 / 60 / 90 jours</h3>
+    <ul>
+      <li><strong>J1–J30 :</strong> Officialisation ANPI, création des profils sociaux + site web, activation du réseau personnel, 2 premières consultations gratuites pour générer des références</li>
+      <li><strong>J30–J60 :</strong> Signature des 2 premiers contrats, démarrage chantiers, premières publications de process (photos de chantier, 3D propositions)</li>
+      <li><strong>J60–J90 :</strong> 3e et 4e projets signés, 1er témoignage client publié, lancement de la campagne sponsorisée Instagram avec le budget de 100 000 FCFA</li>
+    </ul>
+
+    <h3>Fidélisation</h3>
+    <ul>
+      <li>Appel de suivi post-livraison à M+1 et M+6</li>
+      <li>Offre "Home Refresh" annuelle (mise à jour décorative légère)</li>
+      <li>Programme de parrainage : remise de 10% sur le prochain projet pour toute recommandation aboutissant à un contrat signé</li>
+    </ul>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       SECTION 9 — FEUILLE DE ROUTE
+       ═══════════════════════════════════════════════ -->
+  <section class="block" id="roadmap">
+    <h2><span class="num">9</span> Feuille de Route</h2>
+    <ul class="timeline">
+      <li>
+        <div class="tl-dot">P1</div>
+        <div class="tl-content">
+          <div class="tl-period">Mois 1–2</div>
+          <h4>Fondations &amp; Lancement</h4>
+          <p>Immatriculation ANPI Gabon (statut auto-entrepreneur ou profession libérale), ouverture d'un compte bancaire professionnel, acquisition des logiciels (SketchUp, Adobe), création du site web portfolio et des profils Instagram/Facebook/LinkedIn. Prospection active des 10 contacts chauds du réseau personnel et envoi des premières propositions commerciales.</p>
+        </div>
+      </li>
+      <li>
+        <div class="tl-dot">P2</div>
+        <div class="tl-content">
+          <div class="tl-period">Mois 2–4</div>
+          <h4>Premiers Projets &amp; Portfolio</h4>
+          <p>Signature et réalisation des 2 à 3 premiers contrats (résidentiels via réseau personnel). Documentation photographique systématique : avant/pendant/après. Publication des premières réalisations sur Instagram et site web. Constitution du noyau du réseau prestataires (menuisier, peintre, électricien, importateur mobilier).</p>
+        </div>
+      </li>
+      <li>
+        <div class="tl-dot">P3</div>
+        <div class="tl-content">
+          <div class="tl-period">Mois 4–8</div>
+          <h4>Montée en Régime</h4>
+          <p>3 à 4 projets actifs en simultané. Lancement de la campagne sponsorisée Facebook/Instagram (budget 100 000 FCFA). Signature de 2 partenariats avec agences immobilières librévilloises. Cadrage des processus (contrats types, bons de commande prestataires, tableaux de bord chantier). Premier projet commercial (bureau ou commerce).</p>
+        </div>
+      </li>
+      <li>
+        <div class="tl-dot">P4</div>
+        <div class="tl-content">
+          <div class="tl-period">Mois 8–12</div>
+          <h4>Consolidation &amp; Réputation</h4>
+          <p>Atteinte de la cible mensuelle de 2 à 3 projets/mois. Publication du 1er témoignage vidéo client. Référencement Google établi (apparition sur "architecte intérieur Libreville"). Bilan Year 1 et planification Year 2 : recrutement d'un collaborateur junior ou stagiaire.</p>
+        </div>
+      </li>
+      <li>
+        <div class="tl-dot">P5</div>
+        <div class="tl-content">
+          <div class="tl-period">Année 2–3</div>
+          <h4>Structuration &amp; Expansion</h4>
+          <p>Intégration d'un designer junior ou assistante projet. Développement de l'offre hôtelière et restauration (projets à forts honoraires). Première incursion régionale à Port-Gentil (ville pétrolière, forte demande expatriés). Création d'un e-shop de mobilier sélectionné. Exploration franchise ou licence de marque CEMAC.</p>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       SECTION 10 — PROJECTIONS FINANCIÈRES
+       ═══════════════════════════════════════════════ -->
+  <section class="block" id="finance">
+    <h2><span class="num">10</span> Projections Financières</h2>
+
+    <div class="two-col">
+      <div>
+        <h3>Investissement Initial</h3>
+        <div class="fin-row"><span>Matériel &amp; logiciels (SketchUp, Adobe, AutoCAD LT)</span><span><strong>150 000 FCFA</strong></span></div>
+        <div class="fin-row"><span>Site web portfolio + séance photo</span><span><strong>100 000 FCFA</strong></span></div>
+        <div class="fin-row"><span>Communication &amp; marketing initial (budget publicité)</span><span><strong>100 000 FCFA</strong></span></div>
+        <div class="fin-row"><span>Immatriculation ANPI + légal (contrats types)</span><span><strong>100 000 FCFA</strong></span></div>
+        <div class="fin-row"><span>Fournitures bureau &amp; impression plans</span><span><strong>50 000 FCFA</strong></span></div>
+        <div class="fin-row"><span>Fonds de roulement (3 mois de charges)</span><span><strong>200 000 FCFA</strong></span></div>
+        <div class="fin-row total"><span>Total Investissement Initial (est.)</span><span>700 000 FCFA</span></div>
+      </div>
+      <div>
+        <h3>Prévision de Revenus</h3>
+        <div class="fin-row"><span>Mois 1–3 (ramp-up) — avg 700K FCFA/mois</span><span><strong>2 100 000 FCFA</strong></span></div>
+        <div class="fin-row"><span>Mois 4–6 — avg 1,5M FCFA/mois</span><span><strong>4 500 000 FCFA</strong></span></div>
+        <div class="fin-row"><span>Mois 7–12 — avg 2,6M FCFA/mois</span><span><strong>15 600 000 FCFA</strong></span></div>
+        <div class="fin-row total"><span>CA Total Année 1 (est.)</span><span>22 200 000 FCFA</span></div>
+        <div class="fin-row"><span>CA cible Année 2 (est.)</span><span><strong>42 000 000 FCFA</strong></span></div>
+        <div class="fin-row"><span>CA cible Année 3 (est.)</span><span><strong>70 000 000 FCFA</strong></span></div>
+      </div>
+    </div>
+
+    <div class="charts-row" style="margin-top:28px">
+      <div>
+        <div class="chart-title">Projections de revenus sur 3 ans (FCFA)</div>
+        <div class="chart-wrap">
+          <canvas id="revenueChart"></canvas>
+        </div>
+      </div>
+      <div>
+        <div class="chart-title">Allocation de l'investissement initial</div>
+        <div class="chart-wrap" style="max-width:300px;margin:0 auto">
+          <canvas id="investChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:24px">
+      <h3>Charges d'exploitation mensuelles (OPEX)</h3>
+      <div class="fin-row"><span>Abonnements logiciels (SketchUp, Adobe, Canva Pro)</span><span><strong>15 000 FCFA</strong></span></div>
+      <div class="fin-row"><span>Téléphone &amp; Internet professionnel</span><span><strong>25 000 FCFA</strong></span></div>
+      <div class="fin-row"><span>Transport &amp; déplacements (visites terrain)</span><span><strong>60 000 FCFA</strong></span></div>
+      <div class="fin-row"><span>Marketing digital (sponsorisation réseaux sociaux)</span><span><strong>30 000 FCFA</strong></span></div>
+      <div class="fin-row"><span>Fournitures &amp; impression de plans</span><span><strong>15 000 FCFA</strong></span></div>
+      <div class="fin-row"><span>CNSS / charges sociales (hypothèse)</span><span><strong>30 000 FCFA</strong></span></div>
+      <div class="fin-row"><span>Divers &amp; imprévus</span><span><strong>10 000 FCFA</strong></span></div>
+      <div class="fin-row total"><span>Total OPEX mensuel (est.)</span><span>185 000 FCFA</span></div>
+    </div>
+
+    <div class="box box-success" style="margin-top:20px">
+      <strong>Synthèse financière</strong>
+      <ul style="margin-top:6px;padding-left:20px">
+        <li><strong>Seuil de rentabilité mensuel :</strong> 185 000 FCFA de CA — atteint dès le premier projet partiel facturé</li>
+        <li><strong>Retour sur investissement initial :</strong> moins d'un mois d'activité à régime normal</li>
+        <li><strong>Bénéfice net estimé Année 1 :</strong> ~15,7M FCFA après impôts (~71% de marge nette)</li>
+        <li><strong>Bénéfice net estimé Année 2 :</strong> ~33M FCFA | Année 3 : ~57M FCFA</li>
+        <li>Toutes les projections sont des estimations <em>(hypothèse — source : connaissance interne + benchmarks secteur services Afrique)</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       SECTION 11 — ANALYSE DES RISQUES
+       ═══════════════════════════════════════════════ -->
+  <section class="block" id="risks">
+    <h2><span class="num">11</span> Analyse des Risques</h2>
+    <table class="tbl">
+      <thead>
+        <tr><th style="width:18%">Risque</th><th>Description</th><th style="width:10%">Niveau</th><th>Mitigation</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Non-paiement client</strong></td>
+          <td>Client reporte ou refuse le paiement final après livraison du projet.</td>
+          <td><span class="risk-high">Élevé</span></td>
+          <td>Contrat signé avec acompte de 30% au démarrage + tranche à mi-parcours. Clause de suspension des travaux en cas de retard de paiement.</td>
+        </tr>
+        <tr>
+          <td><strong>Défaillance prestataire</strong></td>
+          <td>Artisan abandonne le chantier, travail non conforme ou délais non respectés.</td>
+          <td><span class="risk-high">Élevé</span></td>
+          <td>Réseau de 2 prestataires alternatifs par corps de métier. Contrat prestataire avec retenue de garantie à la réception. Plafonner la sous-traitance à des prestataires déjà testés.</td>
+        </tr>
+        <tr>
+          <td><strong>Sous-charge de projets</strong></td>
+          <td>Insuffisance de commandes les 3 premiers mois — revenus en-deçà des prévisions.</td>
+          <td><span class="risk-med">Moyen</span></td>
+          <td>3 mois de fonds de roulement en réserve. Offre d'entrée "Conseil Horaire" pour générer du flux dès le démarrage. Prospection proactive dès M-1 avant ouverture officielle.</td>
+        </tr>
+        <tr>
+          <td><strong>Litiges sur travaux</strong></td>
+          <td>Désaccord client sur la conformité du résultat au projet initial.</td>
+          <td><span class="risk-high">Élevé</span></td>
+          <td>Cahier des charges écrit et signé avec descriptif détaillé par pièce. PV de validation intermédiaire. Médiation amiable avant tout recours — clause inscrite au contrat.</td>
+        </tr>
+        <tr>
+          <td><strong>Instabilité macro-économique</strong></td>
+          <td>Ralentissement de l'investissement privé suite à la transition politique gabonaise post-2023.</td>
+          <td><span class="risk-med">Moyen</span></td>
+          <td>Diversifier entre clients résidentiels, PME et organisations institutionnelles/ONG. Viser 20% du CA sur des projets moins exposés aux cycles pétroliers.</td>
+        </tr>
+        <tr>
+          <td><strong>Pression concurrentielle prix</strong></td>
+          <td>Clients qui comparent avec des décorateurs informels pratiquant des tarifs 3× inférieurs.</td>
+          <td><span class="risk-med">Moyen</span></td>
+          <td>Éduquer le client sur le ROI : maîtrise budgétaire, gain de temps, qualité garantie. Offrir une transparence totale sur les coûts. Valoriser le coût des échecs chez les concurrents informels.</td>
+        </tr>
+        <tr>
+          <td><strong>Dépendance algorithmique</strong></td>
+          <td>Perte de portée Instagram/Facebook en cas de changement d'algorithme.</td>
+          <td><span class="risk-low">Faible</span></td>
+          <td>Diversifier les canaux : bouche-à-oreille, LinkedIn, partenariats physiques. Constituer une base de contacts email dès le départ.</td>
+        </tr>
+        <tr>
+          <td><strong>Surcharge et burnout freelance</strong></td>
+          <td>Saturlation si trop de projets simultanés sans renfort — qualité en baisse.</td>
+          <td><span class="risk-low">Faible</span></td>
+          <td>Limiter à 4–5 projets simultanés. Sous-traiter la gestion de chantier sur les projets simples. Prévoir le recrutement d'un junior dès que le CA franchit 40M FCFA/an.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       SECTION 12 — CROISSANCE & SCALABILITÉ
+       ═══════════════════════════════════════════════ -->
+  <section class="block" id="growth">
+    <h2><span class="num">12</span> Croissance &amp; Scalabilité</h2>
+
+    <p>Le modèle freelance de Sido Déco est conçu pour évoluer progressivement sans perdre sa qualité de service. Voici les 6 leviers de croissance identifiés :</p>
+
+    <div class="grid">
+      <div class="card">
+        <h3>👥 Recrutement junior (An 2)</h3>
+        <p>Intégrer un collaborateur junior ou stagiaire permet de doubler le volume de projets simultanés sans doubler les charges fixes. Le fondateur se concentre sur la relation client et la conception ; le junior gère le suivi de chantier.</p>
+      </div>
+      <div class="card">
+        <h3>🏨 Segment Hôtels &amp; Restaurants</h3>
+        <p>Les projets d'aménagement d'hôtels, restaurants et commerces de standing à Libreville génèrent des honoraires élevés (2–10M FCFA) et des durées de projet plus longues, stabilisant le CA mensuel.</p>
+      </div>
+      <div class="card">
+        <h3>📦 Packs standardisés</h3>
+        <p>"Pack Studio 30m²", "Pack Bureau 10 postes", "Pack Villa Prestige" — des offres prépackagées à prix fixe réduisent le cycle de vente et permettent d'adresser des clients moins à l'aise avec les forfaits sur-mesure.</p>
+      </div>
+      <div class="card">
+        <h3>🗺️ Expansion régionale</h3>
+        <p>Port-Gentil (ville pétrolière, forte communauté expatriée), Franceville et Oyem représentent des marchés secondaires accessibles à faible coût additionnel pour un freelance mobile.</p>
+      </div>
+      <div class="card">
+        <h3>🛋️ E-shop mobilier sélectionné</h3>
+        <p>Monétiser les recommandations de mobilier via une boutique en ligne de pièces sourcées (importations Europe/Asie, artisanat Gabon). Marge additionnelle sur chaque projet sans surcharge de travail.</p>
+      </div>
+      <div class="card">
+        <h3>🎓 Ateliers &amp; Formation</h3>
+        <p>Ateliers déco pour particuliers (1 journée, 25 000–50 000 FCFA/participant), contenus en ligne, consulting formations — monétiser l'expertise sans mobiliser du temps porjet.</p>
+      </div>
+    </div>
+
+    <h3>Projection de progression du portefeuille clients actifs</h3>
+    <ul class="progress-list" style="margin-top:12px">
+      <div class="progress-item">
+        <div class="progress-label"><span>Fin Année 1 — 2–3 projets/mois</span><span>30%</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:30%"></div></div>
+      </div>
+      <div class="progress-item">
+        <div class="progress-label"><span>Fin Année 2 — 4–5 projets/mois</span><span>55%</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:55%"></div></div>
+      </div>
+      <div class="progress-item">
+        <div class="progress-label"><span>Fin Année 3 — 6–8 projets/mois (avec junior)</span><span>80%</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:80%"></div></div>
+      </div>
+    </ul>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       SECTION 13 — FACTEURS CLÉS DE SUCCÈS
+       ═══════════════════════════════════════════════ -->
+  <section class="block" id="success-factors">
+    <h2><span class="num">13</span> Facteurs Clés de Succès</h2>
+
+    <div class="grid">
+      <div class="card">
+        <h3>1. Qualité irréprochable des premiers projets</h3>
+        <p>Les 3 premières réalisations constitueront l'intégralité du portfolio initial et alimenteront le bouche-à-oreille. Une malfaçon ou un client insatisfait à ce stade peut briser la dynamique avant même qu'elle démarre. <strong>Tolérance zéro sur la qualité en phase d'amorçage.</strong></p>
+      </div>
+      <div class="card">
+        <h3>2. Réseau de prestataires fiables et loyaux</h3>
+        <p>Le modèle repose entièrement sur la capacité à livrer des projets via des tiers. Sans un noyau de 5–8 prestataires <em>vraiment</em> fiables (menuisier, peintre, électricien, fournisseur mobilier, entreprise de travaux), la promesse client s'effondre. <strong>Ce réseau est un actif stratégique autant que les compétences créatives.</strong></p>
+      </div>
+      <div class="card">
+        <h3>3. Présence digitale visuelle forte</h3>
+        <p>À Libreville, les clients se décident largement via Instagram avant même de demander un devis. Un profil avec photos professionnelles de réalisations, stories de chantier et témoignages génère une réputation numérique qui remplace plusieurs milliers de FCFA de publicité. <strong>Photographier systématiquement chaque projet est non-négociable.</strong></p>
+      </div>
+      <div class="card">
+        <h3>4. Contrats et gestion financière serrés</h3>
+        <p>En contexte gabonais, le risque de non-paiement ou de "renegociation sauvage" en fin de projet est réel. Des contrats détaillés, des acomptes respectés et une facturation en tranches sont la seule façon de protéger la trésorerie. <strong>Aucun démarrage de travaux sans acompte signé et encaissé.</strong></p>
+      </div>
+      <div class="card">
+        <h3>5. Prospection commerciale permanente</h3>
+        <p>Un freelance n'a pas de service commercial dédié. La génération de leads doit être une activité hebdomadaire, pas ponctuelle. Réseau, partenariats, publications sur les réseaux, appels sortants — la machine commerciale doit tourner en parallèle de chaque projet en cours. <strong>Consacrer au moins 20% du temps de travail à la prospection.</strong></p>
+      </div>
+      <div class="card">
+        <h3>6. Vision créative différenciante</h3>
+        <p>Sur ce marché, le compte Instagram et le portfolio web sont les premières preuves de compétence vues par le client. Des rendus 3D photoréalistes, un sens des tendances et une capacité à proposer des concepts inattendus mais cohérents créent l'envie d'acheter avant même le premier rendez-vous. <strong>Investir dans la qualité des visuels présentés est un investissement commercial direct.</strong></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       SECTION 14 — CONCLUSION & PROCHAINES ÉTAPES
+       ═══════════════════════════════════════════════ -->
+  <section class="block" id="conclusion">
+    <h2><span class="num">14</span> Conclusion &amp; Prochaines Étapes</h2>
+
+    <p>Le marché de l'architecture d'intérieur à Libreville est à un point d'inflexion : la demande est structurellement là — boom immobilier, classe aisée exigeante, essor du tertiaire — mais l'offre professionnelle structurée est quasi inexistante. <strong>Sido Déco a une fenêtre d'opportunité claire pour s'installer comme la référence locale.</strong></p>
+
+    <p>Son avantage concurrentiel n'est pas technologique ni financier — il est <em>humain et systémique</em> : la combinaison d'une vision créative professionnelle, d'un réseau de prestataires maîtrisés et d'une gestion de projet rigoureuse, le tout emballé dans un modèle lean sans charges fixes lourdes. Avec seulement <strong>700 000 FCFA d'investissement initial</strong>, le risque est minimal et le potentiel de revenus — <strong>15–57 millions FCFA de bénéfice net sur 3 ans (est.)</strong> — est exceptionnel pour une activité Solo.</p>
+
+    <div class="box box-info" style="margin-top:16px">
+      <strong>Actions immédiates — À lancer dès cette semaine</strong>
+      <ol style="padding-left:20px; margin-top:6px">
+        <li>Déposer le dossier d'immatriculation à l'<strong>ANPI Gabon</strong> (Libreville) — statut entrepreneur individuel ou profession libérale</li>
+        <li>Ouvrir un <strong>compte bancaire professionnel</strong> (UGB, BGFIBank ou Orabank Gabon)</li>
+        <li>Créer les <strong>profils Instagram, Facebook et LinkedIn</strong> Sido Déco avec photo de couverture et bio professionnelle</li>
+        <li>Commander le <strong>site web portfolio</strong> (prestataire local ou Wix/Squarespace) — cible : en ligne en moins de 3 semaines</li>
+        <li>Identifier et contacter <strong>10 prospects chauds</strong> du réseau personnel susceptibles de devenir les premiers clients</li>
+        <li>Établir le <strong>contrat type</strong> client (conditions générales, modalités de paiement, cahier des charges) avec l'aide d'un juriste local</li>
+        <li>Constituer la <strong>liste de 8–10 prestataires candidats</strong> (artisans, fournisseurs de mobilier) à rencontrer et qualifier pour le réseau</li>
+      </ol>
+    </div>
+
+    <div class="box box-accent" style="margin-top:12px">
+      <strong>Le moment d'agir, c'est maintenant</strong>
+      Les marchés encore peu professionnalisés récompensent les premiers entrants sérieux. Chaque mois supplémentaire sans lancement est un mois de portfolio non constitué, de notoriété non bâtie et de revenus non générés. Sido Déco a le concept, la méthodologie et le potentiel — il ne manque que l'exécution.
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <strong>Sido Déco</strong> — Architecture d'Intérieur Freelance · Libreville, Gabon<br>
+  Document de présentation confidentiel · Mars 2026 · Toutes projections financières sont des estimations (hypothèse — connaissance interne)
+</footer>
+
+<script>
+// ── TAM / SAM / SOM — Marché design intérieur Libreville ─────────────────
+new Chart(document.getElementById('tamChart'), {
+  type: 'bar',
+  data: {
+    labels: [
+      'TAM — Marché design & rénovation intérieure Gabon',
+      'SAM — Segments moyen-haut & luxe, Libreville',
+      'SOM — Part visée Sido Déco Année 1'
+    ],
+    datasets: [{
+      label: 'Valeur (M FCFA)',
+      data: [3000, 1200, 22],
+      backgroundColor: [
+        'rgba(123,36,85,.12)',
+        'rgba(123,36,85,.40)',
+        '#7b2455'
+      ],
+      borderColor: ['#7b2455', '#7b2455', '#7b2455'],
+      borderWidth: 2,
+      borderRadius: 6
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: ctx => '  ' + ctx.parsed.x.toLocaleString('fr-FR') + ' M FCFA'
+        }
+      }
+    },
+    scales: {
+      x: {
+        beginAtZero: true,
+        grid: { color: '#ecdde6' },
+        ticks: { callback: v => v.toLocaleString('fr-FR') }
+      },
+      y: { grid: { display: false } }
+    }
+  }
+});
+
+// ── REVENUE PROJECTION ──────────────────────────────────────────────────
+new Chart(document.getElementById('revenueChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Année 1', 'Année 2', 'Année 3'],
+    datasets: [
+      {
+        label: 'Chiffre d\'affaires',
+        data: [22200000, 42000000, 70000000],
+        backgroundColor: '#7b2455',
+        borderRadius: 5
+      },
+      {
+        label: 'Bénéfice net',
+        data: [15700000, 33000000, 57000000],
+        backgroundColor: '#d4821a',
+        borderRadius: 5
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { position: 'top' } },
+    scales: {
+      y: {
+        beginAtZero: true,
+        grid: { color: '#ecdde6' },
+        ticks: { callback: v => (v / 1000000).toFixed(0) + ' M' }
+      },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// ── INVESTMENT ALLOCATION DONUT ──────────────────────────────────────────
+new Chart(document.getElementById('investChart'), {
+  type: 'doughnut',
+  data: {
+    labels: [
+      'Logiciels & matériel',
+      'Site web & portfolio',
+      'Communication & publicité',
+      'Légal & immatriculation',
+      'Fournitures bureau',
+      'Fonds de roulement'
+    ],
+    datasets: [{
+      data: [21, 14, 14, 14, 8, 29],
+      backgroundColor: [
+        '#7b2455', '#b03070', '#c94b89',
+        '#d4821a', '#e8a020', '#c4a0b6'
+      ],
+      borderWidth: 2,
+      borderColor: '#fff',
+      hoverOffset: 6
+    }]
+  },
+  options: {
+    responsive: true,
+    cutout: '60%',
+    plugins: {
+      legend: {
+        position: 'right',
+        labels: { font: { size: 11 }, boxWidth: 12 }
+      },
+      tooltip: {
+        callbacks: {
+          label: ctx => '  ' + ctx.label + ' : ' + ctx.parsed + '%'
+        }
+      }
+    }
+  }
+});
+
+// ── COMPETITIVE POSITIONING ──────────────────────────────────────────────
+new Chart(document.getElementById('compChart'), {
+  type: 'bar',
+  data: {
+    labels: [
+      'Qualité des concepts',
+      'Coordination prestataires',
+      'Suivi de chantier',
+      'Prix accessible',
+      'Service personnalisé',
+      'Délai de réponse'
+    ],
+    datasets: [
+      {
+        label: 'Sido Déco',
+        data: [90, 95, 92, 78, 95, 88],
+        backgroundColor: '#7b2455',
+        borderRadius: 4
+      },
+      {
+        label: 'Cabinet d\'archi généraliste',
+        data: [82, 60, 65, 32, 50, 55],
+        backgroundColor: '#c4a0b6',
+        borderRadius: 4
+      },
+      {
+        label: 'Magasin d\'ameublement',
+        data: [48, 15, 10, 72, 60, 70],
+        backgroundColor: '#e8d0dc',
+        borderRadius: 4
+      },
+      {
+        label: 'Décorateur informel',
+        data: [40, 38, 42, 92, 68, 50],
+        backgroundColor: '#f0e6eb',
+        borderRadius: 4
+      }
+    ]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    plugins: { legend: { position: 'top' } },
+    scales: {
+      x: {
+        min: 0,
+        max: 100,
+        grid: { color: '#ecdde6' },
+        ticks: { callback: v => v + '%' }
+      },
+      y: { grid: { display: false } }
+    }
+  }
+});
+</script>
+
+</body>
+</html>
