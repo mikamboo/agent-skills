@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="__LANG__">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>__PROJECT_TITLE__ – __COMPANY_NAME__</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+<style>
+/* ═══════════════════════════════════════════════════
+   THEME VARIABLES — swap the palette block to recolor
+   ═══════════════════════════════════════════════════ */
+:root {
+  /* PRIMARY theme (default: deep teal) */
+  --c-primary:       #0f4c75;
+  --c-primary-mid:   #1b6ca8;
+  --c-primary-light: #e8f2fb;
+  --c-accent:        #e8a020;
+  --c-accent-light:  #fff8e6;
+  --c-info:          #2d6bcf;
+  --c-info-light:    #e8f0fe;
+  --c-danger:        #c0392b;
+  --c-warning:       #e67e22;
+  --c-success:       #1e8449;
+  --c-success-light: #e9f7ef;
+
+  /* NEUTRALS */
+  --c-bg:        #f4f6f9;
+  --c-surface:   #ffffff;
+  --c-border:    #e2e8f0;
+  --c-text:      #1e293b;
+  --c-text-mute: #64748b;
+
+  /* SIZING */
+  --radius:  10px;
+  --shadow:  0 2px 10px rgba(0,0,0,.08);
+  --max-w:   1080px;
+}
+
+/* ── RESET & BASE ────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--c-bg);
+  color: var(--c-text);
+  font-size: 15px;
+  line-height: 1.7;
+}
+a { color: var(--c-primary-mid); }
+img { max-width: 100%; }
+
+/* ── TOP NAV ─────────────────────────────────────── */
+.top-nav {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--c-primary);
+  display: flex; align-items: center; gap: 8px;
+  padding: 0 32px;
+  height: 52px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.2);
+  overflow-x: auto;
+}
+.top-nav a {
+  color: rgba(255,255,255,.82);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: background .15s;
+}
+.top-nav a:hover { background: rgba(255,255,255,.15); color: #fff; }
+.top-nav .sep { color: rgba(255,255,255,.3); font-size: 11px; }
+
+/* ── HERO HEADER ─────────────────────────────────── */
+header.hero {
+  background: linear-gradient(135deg, var(--c-primary) 0%, var(--c-primary-mid) 60%, #2980b9 100%);
+  color: white;
+  padding: 56px 40px 48px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+header.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.hero-logo {
+  display: inline-block;
+  font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  background: rgba(255,255,255,.15);
+  border: 1px solid rgba(255,255,255,.3);
+  padding: 4px 16px; border-radius: 20px;
+  margin-bottom: 20px;
+}
+header.hero h1 {
+  font-size: clamp(28px, 5vw, 46px);
+  font-weight: 800;
+  letter-spacing: -.5px;
+  line-height: 1.15;
+  margin-bottom: 14px;
+}
+header.hero .subtitle {
+  font-size: 17px;
+  opacity: .88;
+  max-width: 660px;
+  margin: 0 auto 24px;
+}
+.hero-meta {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 16px;
+  font-size: 13px; opacity: .8;
+}
+.hero-meta span { display: flex; align-items: center; gap: 5px; }
+
+/* ── LAYOUT & SECTIONS ───────────────────────────── */
+.page { max-width: var(--max-w); margin: 0 auto; padding: 0 20px 60px; }
+
+section.block {
+  background: var(--c-surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 32px 36px;
+  margin-top: 24px;
+  border: 1px solid var(--c-border);
+}
+section.block h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--c-primary);
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--c-primary-light);
+  margin-bottom: 20px;
+  display: flex; align-items: center; gap: 10px;
+}
+section.block h2 .num {
+  background: var(--c-primary);
+  color: white;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 800;
+  flex-shrink: 0;
+}
+section.block h3 {
+  font-size: 15px; font-weight: 600;
+  color: var(--c-primary-mid);
+  margin: 18px 0 8px;
+}
+section.block p { margin-bottom: 10px; }
+section.block ul, section.block ol { padding-left: 22px; margin-bottom: 10px; }
+section.block li { margin-bottom: 5px; }
+
+/* ── KPI STRIP ───────────────────────────────────── */
+.kpi-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+}
+.kpi {
+  background: var(--c-primary-light);
+  border-left: 4px solid var(--c-primary);
+  border-radius: var(--radius);
+  padding: 18px 16px;
+  text-align: center;
+}
+.kpi .kpi-val {
+  font-size: 26px; font-weight: 800;
+  color: var(--c-primary);
+  line-height: 1.1;
+}
+.kpi .kpi-label {
+  font-size: 12px; color: var(--c-text-mute);
+  margin-top: 4px;
+  text-transform: uppercase; letter-spacing: .5px;
+}
+
+/* ── CARD GRID ───────────────────────────────────── */
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 16px; }
+.card {
+  background: var(--c-bg);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  padding: 18px;
+}
+.card h3 { font-size: 14px; font-weight: 700; color: var(--c-primary); margin: 0 0 8px; }
+.card p, .card li { font-size: 13.5px; }
+.card ul { padding-left: 16px; }
+
+/* ── CALLOUT BOXES ───────────────────────────────── */
+.box { padding: 16px 20px; border-radius: var(--radius); margin: 14px 0; font-size: 14px; }
+.box-accent   { background: var(--c-accent-light);  border-left: 4px solid var(--c-accent); }
+.box-info     { background: var(--c-info-light);    border-left: 4px solid var(--c-info); }
+.box-success  { background: var(--c-success-light); border-left: 4px solid var(--c-success); }
+.box-warning  { background: #fff3e0;                border-left: 4px solid var(--c-warning); }
+.box strong   { display: block; margin-bottom: 4px; }
+
+/* ── BADGES ──────────────────────────────────────── */
+.badge {
+  display: inline-block;
+  padding: 2px 12px; border-radius: 20px;
+  font-size: 12px; font-weight: 600;
+}
+.badge-primary { background: var(--c-primary);     color: white; }
+.badge-accent  { background: var(--c-accent);      color: white; }
+.badge-success { background: var(--c-success);     color: white; }
+.badge-muted   { background: var(--c-border);      color: var(--c-text-mute); }
+
+/* ── TABLES ──────────────────────────────────────── */
+.tbl { width: 100%; border-collapse: collapse; margin-top: 14px; font-size: 14px; }
+.tbl th, .tbl td { border: 1px solid var(--c-border); padding: 10px 14px; text-align: left; }
+.tbl thead th { background: var(--c-primary); color: white; font-weight: 600; }
+.tbl tbody tr:nth-child(even) { background: var(--c-bg); }
+.tbl tfoot td, .tbl tfoot th { background: var(--c-primary-light); font-weight: 700; color: var(--c-primary); }
+.tbl .risk-high   { color: var(--c-danger);  font-weight: 700; }
+.tbl .risk-med    { color: var(--c-warning); font-weight: 700; }
+.tbl .risk-low    { color: var(--c-success); font-weight: 700; }
+
+/* ── TIMELINE ────────────────────────────────────── */
+.timeline { list-style: none; padding: 0; position: relative; margin-top: 16px; }
+.timeline::before {
+  content: ''; position: absolute; left: 18px; top: 0; bottom: 0;
+  width: 2px; background: var(--c-border);
+}
+.timeline li {
+  display: flex; gap: 20px; align-items: flex-start;
+  padding: 0 0 24px 0; position: relative;
+}
+.tl-dot {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: var(--c-primary); color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 12px;
+  flex-shrink: 0; position: relative; z-index: 1;
+}
+.tl-content { padding-top: 6px; }
+.tl-content h4 { font-size: 14px; font-weight: 700; color: var(--c-primary); }
+.tl-content .tl-period { font-size: 12px; color: var(--c-text-mute); margin-bottom: 4px; }
+.tl-content p { font-size: 13.5px; }
+
+/* ── PROGRESS BARS ───────────────────────────────── */
+.progress-list { list-style: none; padding: 0; }
+.progress-item { margin-bottom: 12px; }
+.progress-label { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px; }
+.progress-bar { height: 8px; background: var(--c-border); border-radius: 4px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--c-primary), var(--c-primary-mid)); border-radius: 4px; }
+
+/* ── SWOT GRID ───────────────────────────────────── */
+.swot {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+  border: 1px solid var(--c-border); border-radius: var(--radius);
+  overflow: hidden; margin-top: 16px;
+}
+.swot-cell { padding: 20px; }
+.swot-cell h4 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; margin-bottom: 10px; }
+.swot-cell ul { padding-left: 18px; font-size: 13.5px; }
+.swot-cell li { margin-bottom: 4px; }
+.swot-s { background: #e9f7ef; border-right: 1px solid var(--c-border); border-bottom: 1px solid var(--c-border); }
+.swot-s h4 { color: #1e8449; }
+.swot-w { background: #fff3e0; border-bottom: 1px solid var(--c-border); }
+.swot-w h4 { color: #b7500a; }
+.swot-o { background: #e8f0fe; border-right: 1px solid var(--c-border); }
+.swot-o h4 { color: #2d6bcf; }
+.swot-t { background: #fdecea; }
+.swot-t h4 { color: #c0392b; }
+
+/* ── TWO-COLUMN LAYOUT ───────────────────────────── */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 8px; }
+@media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
+
+/* ── FINANCIAL HIGHLIGHT ─────────────────────────── */
+.fin-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0; border-bottom: 1px solid var(--c-border);
+  font-size: 14px;
+}
+.fin-row:last-child { border-bottom: none; }
+.fin-row.total { font-weight: 700; color: var(--c-primary); padding-top: 12px; }
+
+/* ── CHARTS & DIAGRAMS ───────────────────────────── */
+.chart-wrap { position: relative; max-width: 100%; margin: 20px 0; }
+.chart-title {
+  font-size: 13px; font-weight: 600; color: var(--c-text-mute);
+  text-align: center; margin-bottom: 10px; text-transform: uppercase; letter-spacing: .5px;
+}
+.charts-row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 20px;
+  align-items: start;
+}
+@media (max-width: 700px) { .charts-row { grid-template-columns: 1fr; } }
+
+/* ── FOOTER ──────────────────────────────────────── */
+footer {
+  background: var(--c-primary);
+  color: rgba(255,255,255,.75);
+  text-align: center;
+  padding: 24px 20px;
+  font-size: 13px;
+  margin-top: 40px;
+}
+footer strong { color: white; }
+
+/* ── PRINT / PDF ─────────────────────────────────── */
+@media print {
+  .top-nav { display: none !important; }
+  body { background: white; font-size: 12px; }
+  section.block { break-inside: avoid; box-shadow: none; border: 1px solid #ddd; }
+  header.hero { break-after: page; }
+  .kpi-strip { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ TOP NAVIGATION ═══════════════════════════════ -->
+<nav class="top-nav" id="top-nav">
+  <!-- sections injected here by the skill -->
+  <!-- example: <a href="#exec-summary">Executive Summary</a><span class="sep">›</span> -->
+  __NAV_LINKS__
+</nav>
+
+<!-- ═══ HERO HEADER ══════════════════════════════════ -->
+<header class="hero" id="top">
+  <p class="hero-logo">__COMPANY_NAME__</p>
+  <h1>__PROJECT_TITLE__</h1>
+  <p class="subtitle">__PROJECT_TAGLINE__</p>
+  <div class="hero-meta">
+    <span>📍 __LOCATION__</span>
+    <span>🏭 __SECTOR__</span>
+    <span>📅 __DATE__</span>
+    __EXTRA_META__
+  </div>
+</header>
+
+<div class="page">
+
+  <!-- ═══════════════════════════════════════════════
+       SECTION 1 — EXECUTIVE SUMMARY
+       ═══════════════════════════════════════════════ -->
+  <section class="block" id="exec-summary">
+    <h2><span class="num">1</span> Executive Summary</h2>
+
+    <!-- KPI strip: replace values with your actual numbers -->
+    <div class="kpi-strip">
+      <div class="kpi"><div class="kpi-val">__KPI1_VAL__</div><div class="kpi-label">__KPI1_LBL__</div></div>
+      <div class="kpi"><div class="kpi-val">__KPI2_VAL__</div><div class="kpi-label">__KPI2_LBL__</div></div>
+      <div class="kpi"><div class="kpi-val">__KPI3_VAL__</div><div class="kpi-label">__KPI3_LBL__</div></div>
+      <div class="kpi"><div class="kpi-val">__KPI4_VAL__</div><div class="kpi-label">__KPI4_LBL__</div></div>
+    </div>
+
+    <p style="margin-top:20px">__EXEC_SUMMARY_TEXT__</p>
+
+    <div class="box box-accent">
+      <strong>Key Value Proposition</strong>
+      __VALUE_PROP__
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       SECTION 2 — COMPANY & VISION
+       ═══════════════════════════════════════════════ -->
+  <section class="block" id="company">
+    <h2><span class="num">2</span> Company &amp; Vision</h2>
+    __COMPANY_SECTION__
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       SECTION 3 — MARKET OPPORTUNITY
+       ═══════════════════════════════════════════════ -->
+  <section class="block" id="market">
+    <h2><span class="num">3</span> Market Opportunity</h2>
+    __MARKET_SECTION__
+
+    <!-- TAM/SAM/SOM chart — replace data with real values from research -->
+    <h3>Taille du marché / Market Size</h3>
+    <div class="chart-wrap" style="max-width:560px">
+      <canvas id="tamChart"></canvas>
+    </div>
+    <!-- Market trend line (optional — add if multi-year growth data available) -->
+    __MARKET_CHART_EXTRA__
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       SECTION 4 — PRODUCT / SERVICE
+       ═══════════════════════════════════════════════ -->
+  <section class="block" id="product">
+    <h2><span class="num">4</span> Product / Service</h2>
+    __PRODUCT_SECTION__
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       SECTION 5 — BUSINESS MODEL
+       ═══════════════════════════════════════════════ -->
+  <section class="block" id="business-model">
+    <h2><span class="num">5</span> Business Model</h2>
+    __BUSINESS_MODEL_SECTION__
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       SECTION 6 — COMPETITIVE LANDSCAPE
+       ═══════════════════════════════════════════════ -->
+  <section class="block" id="competition">
+    <h2><span class="num">6</span> Competitive Landscape</h2>
+    __COMPETITION_SECTION__
+
+    <!-- Competitive positioning chart — replace labels/data with actual competitors -->
+    <h3>Positionnement concurrentiel / Competitive Positioning</h3>
+    <div class="chart-wrap">
+      <canvas id="compChart"></canvas>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       SECTION 7 — SWOT ANALYSIS
+       ═══════════════════════════════════════════════ -->
+  <section class="block" id="swot">
+    <h2><span class="num">7</span> SWOT Analysis</h2>
+    <div class="swot">
+      <div class="swot-cell swot-s">
+        <h4>💪 Strengths</h4>
+        <ul>__SWOT_STRENGTHS__</ul>
+      </div>
+      <div class="swot-cell swot-w">
+        <h4>⚠️ Weaknesses</h4>
+        <ul>__SWOT_WEAKNESSES__</ul>
+      </div>
+      <div class="swot-cell swot-o">
+        <h4>🚀 Opportunities</h4>
+        <ul>__SWOT_OPPORTUNITIES__</ul>
+      </div>
+      <div class="swot-cell swot-t">
+        <h4>🛑 Threats</h4>
+        <ul>__SWOT_THREATS__</ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       SECTION 8 — GO-TO-MARKET STRATEGY
+       ═══════════════════════════════════════════════ -->
+  <section class="block" id="gtm">
+    <h2><span class="num">8</span> Go-To-Market Strategy</h2>
+    __GTM_SECTION__
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       SECTION 9 — IMPLEMENTATION ROADMAP
+       ═══════════════════════════════════════════════ -->
+  <section class="block" id="roadmap">
+    <h2><span class="num">9</span> Implementation Roadmap</h2>
+    <ul class="timeline">
+      __ROADMAP_ITEMS__
+      <!-- Template for each item:
+      <li>
+        <div class="tl-dot">Q1</div>
+        <div class="tl-content">
+          <div class="tl-period">Months 1–3</div>
+          <h4>Phase Title</h4>
+          <p>Description of what happens in this phase.</p>
+        </div>
+      </li>
+      -->
+    </ul>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       SECTION 10 — FINANCIAL PROJECTIONS
+       ═══════════════════════════════════════════════ -->
+  <section class="block" id="finance">
+    <h2><span class="num">10</span> Financial Projections</h2>
+    <div class="two-col">
+      <div>
+        <h3>Initial Investment</h3>
+        __INVESTMENT_ITEMS__
+        <!-- Template:
+        <div class="fin-row"><span>Item</span><span><strong>Amount</strong></span></div>
+        <div class="fin-row total"><span>Total Investment</span><span>Amount</span></div>
+        -->
+      </div>
+      <div>
+        <h3>Revenue Forecast</h3>
+        __REVENUE_ITEMS__
+      </div>
+    </div>
+
+    <!-- CHARTS ROW: Revenue projection + Investment allocation -->
+    <div class="charts-row" style="margin-top:28px">
+      <div>
+        <div class="chart-title">Revenue Projection (3 Years)</div>
+        <div class="chart-wrap">
+          <canvas id="revenueChart"></canvas>
+        </div>
+      </div>
+      <div>
+        <div class="chart-title">Investment Allocation</div>
+        <div class="chart-wrap" style="max-width:300px;margin:0 auto">
+          <canvas id="investChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:24px">
+      <h3>Monthly Operating Costs</h3>
+      __OPEX_TABLE__
+    </div>
+
+    <div class="box box-success" style="margin-top:20px">
+      <strong>Financial Summary</strong>
+      __FINANCIAL_SUMMARY__
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       SECTION 11 — RISK ANALYSIS
+       ═══════════════════════════════════════════════ -->
+  <section class="block" id="risks">
+    <h2><span class="num">11</span> Risk Analysis</h2>
+    <table class="tbl">
+      <thead>
+        <tr><th style="width:18%">Risk</th><th>Description</th><th style="width:10%">Level</th><th>Mitigation</th></tr>
+      </thead>
+      <tbody>
+        __RISK_ROWS__
+        <!-- Template row:
+        <tr>
+          <td><strong>Risk Name</strong></td>
+          <td>Risk description</td>
+          <td><span class="risk-high">High</span></td>
+          <td>Mitigation steps</td>
+        </tr>
+        -->
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       SECTION 12 — GROWTH POTENTIAL (OPTIONAL)
+       ═══════════════════════════════════════════════ -->
+  <section class="block" id="growth">
+    <h2><span class="num">12</span> Growth &amp; Scalability</h2>
+    __GROWTH_SECTION__
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       SECTION 13 — KEY SUCCESS FACTORS (OPTIONAL)
+       ═══════════════════════════════════════════════ -->
+  <section class="block" id="success-factors">
+    <h2><span class="num">13</span> Key Success Factors</h2>
+    __SUCCESS_FACTORS_SECTION__
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       SECTION 14 — TEAM (OPTIONAL — include if info available)
+       ═══════════════════════════════════════════════ -->
+  <!-- __TEAM_SECTION_BLOCK__ -->
+
+  <!-- ═══════════════════════════════════════════════
+       SECTION 15 — CONCLUSION & NEXT STEPS
+       ═══════════════════════════════════════════════ -->
+  <section class="block" id="conclusion">
+    <h2><span class="num">__CONCLUSION_NUM__</span> Conclusion &amp; Next Steps</h2>
+    __CONCLUSION_SECTION__
+
+    <div class="box box-info" style="margin-top:16px">
+      <strong>Immediate Actions</strong>
+      <ol style="padding-left:20px; margin-top:6px">
+        __NEXT_STEPS__
+      </ol>
+    </div>
+  </section>
+
+</div><!-- /page -->
+
+<footer>
+  <strong>__COMPANY_NAME__</strong> — __PROJECT_TITLE__<br>
+  __FOOTER_NOTE__
+</footer>
+
+<!-- ═══ CHART INIT SCRIPTS ══════════════════════════
+     Replace ALL data arrays below with actual values
+     from your research. Do NOT leave example values.
+     ═════════════════════════════════════════════════ -->
+<script>
+// ── TAM / SAM / SOM ──────────────────────────────
+// Adapt labels and data to the specific market + currency
+new Chart(document.getElementById('tamChart'), {
+  type: 'bar',
+  data: {
+    labels: ['TAM — Marché total', 'SAM — Marché adressable', 'SOM — Part visée (An 1)'],
+    datasets: [{
+      label: 'Valeur (M FCFA)',
+      data: [__TAM_VALUE__, __SAM_VALUE__, __SOM_VALUE__],
+      backgroundColor: ['rgba(var(--c-primary-rgb,15,76,117),.15)',
+                        'rgba(var(--c-primary-rgb,15,76,117),.45)',
+                        'var(--c-primary)'],
+      borderColor:     ['var(--c-primary)','var(--c-primary)','var(--c-primary)'],
+      borderWidth: 2, borderRadius: 6
+    }]
+  },
+  options: {
+    indexAxis: 'y', responsive: true,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { beginAtZero: true, grid: { color: '#e2e8f0' },
+           ticks: { callback: v => v.toLocaleString() } },
+      y: { grid: { display: false } }
+    }
+  }
+});
+
+// ── REVENUE PROJECTION ────────────────────────────
+new Chart(document.getElementById('revenueChart'), {
+  type: 'bar',
+  data: {
+    labels: ['__YEAR1_LABEL__', '__YEAR2_LABEL__', '__YEAR3_LABEL__'],
+    datasets: [
+      { label: 'Chiffre d\'affaires',
+        data: [__REV_Y1__, __REV_Y2__, __REV_Y3__],
+        backgroundColor: 'var(--c-primary)', borderRadius: 5 },
+      { label: 'Bénéfice net',
+        data: [__NET_Y1__, __NET_Y2__, __NET_Y3__],
+        backgroundColor: 'var(--c-accent)', borderRadius: 5 }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { position: 'top' } },
+    scales: {
+      y: { beginAtZero: true, grid: { color: '#e2e8f0' },
+           ticks: { callback: v => v.toLocaleString() } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// ── INVESTMENT ALLOCATION DONUT ───────────────────
+new Chart(document.getElementById('investChart'), {
+  type: 'doughnut',
+  data: {
+    labels: __INVEST_LABELS__,
+    // example: ['Équipement', 'Aménagement', 'Stock', 'Licences', 'Fonds roulement', 'Imprévus']
+    datasets: [{
+      data: __INVEST_DATA__,
+      // example: [35, 25, 20, 8, 8, 4]  — percentages summing to 100
+      backgroundColor: ['#0f4c75','#1b6ca8','#2980b9','#e8a020','#27ae60','#95a5a6'],
+      borderWidth: 2, borderColor: '#fff', hoverOffset: 6
+    }]
+  },
+  options: {
+    responsive: true, cutout: '60%',
+    plugins: { legend: { position: 'right', labels: { font: { size: 12 }, boxWidth: 14 } } }
+  }
+});
+
+// ── COMPETITIVE POSITIONING ───────────────────────
+new Chart(document.getElementById('compChart'), {
+  type: 'bar',
+  data: {
+    labels: __COMP_CRITERIA__,
+    // example: ['Prix', 'Qualité', 'Proximité', 'Service', 'Digital']
+    datasets: __COMP_DATASETS__
+    // example datasets:
+    // [
+    //   { label: 'Votre projet',  data: [85,90,95,88,70], backgroundColor: 'var(--c-primary)', borderRadius:4 },
+    //   { label: 'Concurrent A',  data: [70,75,55,60,80], backgroundColor: '#94a3b8', borderRadius:4 },
+    //   { label: 'Concurrent B',  data: [95,55,40,45,30], backgroundColor: '#cbd5e1', borderRadius:4 }
+    // ]
+  },
+  options: {
+    indexAxis: 'y', responsive: true,
+    plugins: { legend: { position: 'top' } },
+    scales: {
+      x: { min: 0, max: 100, grid: { color: '#e2e8f0' },
+           ticks: { callback: v => v + '%' } },
+      y: { grid: { display: false } }
+    }
+  }
+});
+</script>
+
+</body>
+</html>
