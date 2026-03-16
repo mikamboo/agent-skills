@@ -15,7 +15,11 @@
       "source": "./",
       "strict": false,
       "skills": [
-        "./skills/business-presentation"
+        "./skills/business-presentation",
+        "./skills/tech-blog-writer",
+        "./skills/skill-creator",
+        "./skills/pdf",
+        "./skills/frontend-design"
       ]
     }
   ]

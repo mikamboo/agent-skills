@@ -54,7 +54,7 @@ From the user's message, collect:
 
 ### STEP 2 — Deep web research
 
-**This step is mandatory.** Use `WebFetch` to gather real, current market data before
+**This step is mandatory.** Use `web_fetch` to gather real, current market data before
 writing a single section. Shallow AI-generated estimates are not acceptable — ground
 the document in actual sources.
 
