@@ -170,7 +170,6 @@ agent-skills/
 └── claude/                               ← Marketplace root
     ├── .claude-plugin/
     │   └── marketplace.json              ← Marketplace manifest (kevatech-agent-skills)
-    ├── K-BOUTIQUE.html                   ← Example output (Gabon proximity retail)
     └── skills/
         ├── business-presentation/        ← Skill: business presentation generator
         │   ├── SKILL.md                  ← Skill instructions (read by Claude)
