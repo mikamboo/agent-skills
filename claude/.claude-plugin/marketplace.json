@@ -15,7 +15,8 @@
       "source": "./",
       "strict": false,
       "skills": [
-        "./skills/business-presentation"
+        "./skills/business-presentation",
+        "./skills/tech-blog-writer"
       ]
     }
   ]

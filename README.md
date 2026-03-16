@@ -37,6 +37,58 @@ claude plugin install business-skills@kevatech-agent-skills --scope user
 
 ## Available Skills
 
+### `tech-blog-writer`
+
+> **Plugin:** `business-skills@kevatech-agent-skills`
+> **Trigger:** `/tech-blog-writer` or describe a blog post naturally
+
+**What it does:** Turns a topic, a rough content draft, and optional reference links or
+file attachments into a complete, publication-ready Markdown blog post — ready for Astro,
+Next.js, Hugo, Jekyll, or any Markdown-based CMS.
+
+**What it produces:**
+
+| Element               | Content                                                              |
+| --------------------- | -------------------------------------------------------------------- |
+| YAML frontmatter      | title, description, date, tags, author                              |
+| Introduction          | 2–3 sentence hook stating the problem and what the post covers      |
+| Body sections         | `##` main sections + `###` subsections, sentence-case headings      |
+| Code examples         | Fenced blocks (with language id), shell blocks, diff blocks         |
+| Callout blockquotes   | 💡 tips and ⚠️ warnings                                              |
+| Conclusion            | Key-point summary + call-to-action                                  |
+| References            | Cited URLs at the end of the post                                   |
+
+**Process:**
+
+1. Reads topic and content draft, fetches any provided links with `web_fetch`
+2. Checks completeness — asks targeted follow-up questions if draft lacks substance
+3. Writes a polished `.md` file once the minimum quality bar is met
+
+**In-scope post types:** Tutorials · How-to guides · Tool comparisons · Conceptual deep dives
+· Release notes · Migration guides · Architecture walkthroughs
+
+**Output file:** `[topic-slug]-post.md` in the current working directory.
+
+**Usage examples:**
+
+```
+Write a blog post about getting started with Astro. Here are my rough notes: [paste notes]
+```
+
+```
+Turn my bullet points into a publishable article about React Server Components.
+```
+
+```
+/tech-blog-writer — topic: "Deploying a FastAPI app to Railway", draft: [paste draft]
+```
+
+```
+Write a how-to guide comparing Zod and Yup for form validation in a Next.js project.
+```
+
+---
+
 ### `business-presentation`
 
 > **Plugin:** `business-skills@kevatech-agent-skills`
@@ -120,13 +172,15 @@ agent-skills/
     │   └── marketplace.json              ← Marketplace manifest (kevatech-agent-skills)
     ├── K-BOUTIQUE.html                   ← Example output (Gabon proximity retail)
     └── skills/
-        └── business-presentation/        ← Skill: business presentation generator
-            ├── SKILL.md                  ← Skill instructions (read by Claude)
-            ├── assets/
-            │   └── template.html        ← HTML/CSS/Chart.js presentation template
-            └── references/
-                ├── sections-guide.md    ← Section content guidelines + colour themes
-                └── user-info-guide.md   ← Info extraction + sector financial benchmarks
+        ├── business-presentation/        ← Skill: business presentation generator
+        │   ├── SKILL.md                  ← Skill instructions (read by Claude)
+        │   ├── assets/
+        │   │   └── template.html        ← HTML/CSS/Chart.js presentation template
+        │   └── references/
+        │       ├── sections-guide.md    ← Section content guidelines + colour themes
+        │       └── user-info-guide.md   ← Info extraction + sector financial benchmarks
+        └── tech-blog-writer/            ← Skill: tech blog post generator
+            └── SKILL.md                 ← Skill instructions (read by Claude)
 ```
 
 ---
@@ -203,4 +257,4 @@ generated for a Gabonese context (in French). Open in any browser.
 | Plugin pack      | `business-skills`                        |
 | Manifest         | `claude/.claude-plugin/marketplace.json` |
 | Scope (current)  | `project`                                |
-| Skills count     | 1                                        |
+| Skills count     | 2                                        |
