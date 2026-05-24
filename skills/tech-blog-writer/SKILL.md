@@ -88,11 +88,11 @@ Produce the full Markdown blog post using the output structure defined below.
 Write the finished Markdown to a file named:
 
 ```
-[topic-slug]-post.md
+[date]-[topic-slug]-post.md
 ```
 
 in the current working directory (or one the user has indicated). Use kebab-case for the slug
-(e.g. `getting-started-with-astro-post.md`).
+(e.g. `2026-03-16-getting-started-with-astro-post.md`).
 
 After writing the file, tell the user:
 
@@ -106,11 +106,16 @@ After writing the file, tell the user:
 
 ```markdown
 ---
+layout: post
+navigation: true
 title: "Post Title"
 description: "One-sentence summary for SEO and previews."
 date: YYYY-MM-DD   # replace with today's date, e.g. 2026-03-16
 tags: [tag1, tag2, tag3]
-author: ""
+categories: [category1, category2]
+author: "michael"
+class: post-template
+subclass: post
 ---
 
 ## Introduction
