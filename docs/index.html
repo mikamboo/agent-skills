@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SmartB Skills Marketplace</title>
+<style>
+  :root {
+    --bg: #f6f5f2;
+    --bg-elevated: #ffffff;
+    --ink: #1c1b19;
+    --ink-muted: #5c5850;
+    --border: #e4e1da;
+    --accent: #7a4f2b;
+    --accent-ink: #ffffff;
+    --code-bg: #efece4;
+    --pill-bg: #efe6da;
+    --pill-ink: #6b4423;
+    --shadow: 0 1px 2px rgba(28, 27, 25, 0.04), 0 8px 24px rgba(28, 27, 25, 0.05);
+    --radius: 14px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #17140f;
+      --bg-elevated: #221e17;
+      --ink: #f1ede4;
+      --ink-muted: #b3ac9e;
+      --border: #373125;
+      --accent: #d9a066;
+      --accent-ink: #1c1408;
+      --code-bg: #2a251c;
+      --pill-bg: #3a2f21;
+      --pill-ink: #e3bd8a;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, "Segoe UI", "Inter", system-ui, sans-serif;
+    line-height: 1.55;
+  }
+
+  main {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+  }
+
+  header.hero {
+    margin-bottom: 40px;
+  }
+
+  .eyebrow {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  h1 {
+    font-size: clamp(28px, 5vw, 40px);
+    margin: 8px 0 10px;
+    letter-spacing: -0.01em;
+  }
+
+  .hero-desc {
+    color: var(--ink-muted);
+    font-size: 16px;
+    max-width: 560px;
+  }
+
+  .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--pill-bg);
+    color: var(--pill-ink);
+    border-radius: 999px;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  section { margin-bottom: 44px; }
+
+  h2 {
+    font-size: 20px;
+    margin: 0 0 16px;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+
+  h2 .count {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink-muted);
+  }
+
+  .card {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 24px;
+    margin-bottom: 18px;
+  }
+
+  .card h3 {
+    margin: 0 0 6px;
+    font-size: 18px;
+  }
+
+  .card .trigger {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 13px;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .card p { margin: 0 0 12px; color: var(--ink-muted); }
+
+  .card ul { margin: 0 0 12px; padding-left: 20px; color: var(--ink-muted); }
+  .card ul li { margin-bottom: 4px; }
+
+  .example {
+    background: var(--code-bg);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 13px;
+    color: var(--ink);
+    white-space: pre-wrap;
+    margin-top: 10px;
+  }
+
+  .badge-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+  .badge {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-muted);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 2px 8px;
+  }
+
+  pre.install {
+    background: var(--code-bg);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    overflow-x: auto;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 13.5px;
+    line-height: 1.7;
+  }
+
+  pre.install .comment { color: var(--ink-muted); }
+
+  footer {
+    color: var(--ink-muted);
+    font-size: 13px;
+    border-top: 1px solid var(--border);
+    padding-top: 20px;
+  }
+
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  @media (max-width: 480px) {
+    main { padding: 28px 16px 60px; }
+    .card { padding: 18px; }
+  }
+</style>
+</head>
+<body>
+<main>
+
+  <header class="hero">
+    <div class="eyebrow">Claude Code Plugin Marketplace</div>
+    <h1>SmartB Skills Marketplace</h1>
+    <p class="hero-desc">Company business and productivity skills for Claude Code — presentation
+      generation and technical blog writing, packaged as an installable plugin.</p>
+    <div class="meta-row">
+      <span class="pill">smartb-skills-marketplace</span>
+      <span class="pill">1 plugin</span>
+      <span class="pill">2 skills</span>
+      <span class="pill">v1.0.0</span>
+    </div>
+  </header>
+
+  <section id="plugins">
+    <h2>Plugins <span class="count">1</span></h2>
+    <div class="card">
+      <h3>business-skills</h3>
+      <div class="trigger">plugins/business-skills</div>
+      <p>Business productivity skills: presentation generation and tech blog writing.</p>
+      <div class="badge-row">
+        <span class="badge">version 1.0.0</span>
+        <span class="badge">2 skills</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <h2>Skills <span class="count">2</span></h2>
+
+    <div class="card">
+      <h3>business-presentation</h3>
+      <div class="trigger">/business-presentation</div>
+      <p>Turns any business idea description into a complete, investor-ready HTML presentation —
+        executive summary, market sizing, business model, SWOT, roadmap, financial projections
+        (with Chart.js charts), and more. Open in a browser and print to PDF.</p>
+      <ul>
+        <li>Deep web research for real market data, competitors, and regulations</li>
+        <li>Detects input language and produces the document in kind</li>
+        <li>Self-contained <code>.html</code> output, no extra files needed</li>
+      </ul>
+      <div class="example">I want to open a modern pastry shop in Libreville, Gabon. Budget: 8 million FCFA.</div>
+    </div>
+
+    <div class="card">
+      <h3>tech-blog-writer</h3>
+      <div class="trigger">/tech-blog-writer</div>
+      <p>Turns a topic, a rough content draft, and optional reference links into a complete,
+        publication-ready Markdown blog post — ready for Astro, Next.js, Hugo, Jekyll, or any
+        Markdown-based CMS.</p>
+      <ul>
+        <li>Fetches and reads any provided reference links</li>
+        <li>Asks targeted follow-up questions if the draft lacks substance</li>
+        <li>Covers tutorials, how-tos, comparisons, release notes, and migration guides</li>
+      </ul>
+      <div class="example">Turn my bullet points into a publishable article about React Server Components.</div>
+    </div>
+  </section>
+
+  <section id="install">
+    <h2>Install / Update</h2>
+    <pre class="install"><span class="comment"># Register the marketplace (once per machine)</span>
+claude plugin marketplace add ./
+
+<span class="comment"># Install into the current project</span>
+claude plugin install business-skills@smartb-skills-marketplace --scope project
+
+<span class="comment"># ...or make it available globally across all projects</span>
+claude plugin install business-skills@smartb-skills-marketplace --scope user
+
+<span class="comment"># Pick up changes after a new release</span>
+claude plugin marketplace update
+claude plugin update business-skills@smartb-skills-marketplace</pre>
+  </section>
+
+  <footer>
+    Full docs in <a href="../README.md">README.md</a> · Contributing guide in
+    <a href="../CONTRIBUTING.md">CONTRIBUTING.md</a> · Example output in
+    <a href="./examples/sido-deco-presentation.html">docs/examples/sido-deco-presentation.html</a>
+  </footer>
+
+</main>
+</body>
+</html>

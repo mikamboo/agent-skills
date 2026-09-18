@@ -1,26 +1,19 @@
 {
-  "name": "kevatech-agent-skills",
+  "name": "smartb-skills-marketplace",
   "owner": {
     "name": "michael",
     "email": "michael@smartbamboo.net"
   },
   "metadata": {
-    "description": "Local business and productivity skills",
+    "description": "Company business and productivity skills",
     "version": "1.0.0"
   },
   "plugins": [
     {
       "name": "business-skills",
-      "description": "Business productivity skills including business presentation generation",
-      "source": "./",
-      "strict": false,
-      "skills": [
-        "./skills/business-presentation",
-        "./skills/tech-blog-writer",
-        "./skills/skill-creator",
-        "./skills/pdf",
-        "./skills/frontend-design"
-      ]
+      "source": "./plugins/business-skills",
+      "description": "Business productivity skills including business presentation generation and tech blog writing",
+      "version": "1.0.0"
     }
   ]
 }

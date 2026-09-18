@@ -1,0 +1,14 @@
+{
+  "name": "business-skills",
+  "displayName": "Business Skills",
+  "version": "1.0.0",
+  "description": "Business productivity skills: presentation generation and tech blog writing",
+  "author": {
+    "name": "michael",
+    "email": "michael@smartbamboo.net"
+  },
+  "skills": [
+    "./skills/business-presentation",
+    "./skills/tech-blog-writer"
+  ]
+}
