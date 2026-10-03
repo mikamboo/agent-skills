@@ -9,7 +9,7 @@ for business presentations and technical blog writing.
   root, one plugin with its own `.claude-plugin/plugin.json`)
 - **Plugin:** `business-skills` — lives in `plugins/business-skills/`
 - **Location:** `plugins/business-skills/skills/` — skill definitions live here
-- **Current skills:** `tech-blog-writer`, `business-presentation`
+- **Current skills:** `tech-blog-writer`, `business-presentation`, `interview-prep-app`
 - **Scope:** Project-level enabled in `.claude/settings.json`
 
 ## Working with Skills
@@ -48,6 +48,7 @@ Each skill lives in `plugins/business-skills/skills/{skill-name}/` with:
 | `plugins/business-skills/skills/*/SKILL.md` | Skill definitions (core instructions for Claude) |
 | `docs/index.html` | Browsable marketplace dashboard |
 | `.github/workflows/validate.yml` | CI gate running `claude plugin validate .` on PRs |
+| `.github/workflows/claude-code-review.yml` | Automated Claude review on every pull request |
 
 ## Code Quality Standards
 
@@ -79,6 +80,13 @@ Main branch: `main` — no direct pushes, all changes go through a pull request 
 `validate` CI check and a CODEOWNERS review (see `CONTRIBUTING.md`).
 Feature branches: `copilot/descriptor` (e.g., `copilot/add-tech-blog-writer-skill`)
 
+## Pull Request Review
+
+Every PR is also reviewed automatically by Claude (`.github/workflows/claude-code-review.yml`, needs the `CLAUDE_CODE_OAUTH_TOKEN` repo secret). The reviewer reads this file, so keep it accurate. When reviewing, check that:
+- a new skill has valid `SKILL.md` frontmatter and is registered in `plugin.json` with a version bump
+- files referenced in `SKILL.md` exist under `assets/` or `references/`
+- `README.md` and `docs/index.html` document the skill
+
 ---
 
-**Last updated:** 2026-09-18
+**Last updated:** 2026-10-03

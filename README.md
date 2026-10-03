@@ -50,7 +50,7 @@ claude plugin update business-skills@smartb-skills-marketplace
 > **Marketplace:** `smartb-skills-marketplace`
 > **Source:** `./plugins/business-skills`
 
-Business productivity skills: presentation generation and tech blog writing.
+Business productivity skills: presentation generation, tech blog writing and interview prep.
 
 #### `tech-blog-writer`
 
@@ -173,6 +173,54 @@ Open the generated `.html` in Chrome or Edge → `Ctrl+P` (or `Cmd+P`) → **Sav
 
 ---
 
+#### `interview-prep-app`
+
+> **Trigger:** `/interview-prep-app` or share a CV and a job posting and ask for interview prep
+
+**What it does:** Turns a CV and a job posting into a tailored, single-file HTML interview-prep
+app. The design is fixed (a release-pipeline sidebar, light/dark theme, mobile tab bar); only the
+content changes per candidate and role.
+
+**What it produces (8 sections):**
+
+| Section             | Content                                                                 |
+| ------------------- | ----------------------------------------------------------------------- |
+| Briefing            | Dated company facts, work-streams from the posting, decoded tech stack  |
+| Pitch               | 4-paragraph elevator pitch with a built-in timer                        |
+| Flagship story      | One STAR story closest to the role, plus a backup story                 |
+| Likely questions    | Technical and behavioral questions grouped by the posting's themes     |
+| Quiz                | Self-rated flashcard-style quiz with replay of items to review          |
+| Strengths           | Requirement / asset / CV proof table and one honest blind-spot card     |
+| Questions to ask    | 4-6 questions tied to the role's work-streams                           |
+| Proof points        | Verified recent public work (blog, GitHub, certifications)              |
+
+**Process:**
+
+1. Reads the CV(s) and the job posting
+2. Asks two questions: format (reference / quiz / flashcards) and depth (concise / detailed)
+3. Researches the company with web search, dating every figure
+4. Fills `assets/template.html` and delivers the app (as an Artifact when available)
+
+**Multi-language:** Content and interface follow the job posting's language (FR/EN).
+
+**Output file:** `<company>-<role-slug>.html`
+
+**Usage examples:**
+
+```
+Prépare-moi pour cet entretien chez Société Générale. Voici mon CV et l'offre : [coller]
+```
+
+```
+Help me prep for this interview. Here's the job description and my resume.
+```
+
+```
+Update my interview prep app: my CV changed, and translate it to English.
+```
+
+---
+
 ## Repository Structure
 
 ```
@@ -183,7 +231,8 @@ agent-skills/
 ├── CODEOWNERS                             ← Required reviewers for manifest/plugin/CI changes
 ├── .github/
 │   └── workflows/
-│       └── validate.yml                  ← CI: `claude plugin validate .` on every PR
+│       ├── validate.yml                  ← CI: `claude plugin validate .` on every PR
+│       └── claude-code-review.yml        ← Claude reviews every pull request
 ├── .claude/
 │   └── settings.json                     ← Project-level enabled plugins
 ├── .claude-plugin/
@@ -200,8 +249,12 @@ agent-skills/
 │           │   └── references/
 │           │       ├── sections-guide.md      ← Section content guidelines + colour themes
 │           │       └── user-info-guide.md     ← Info extraction + sector financial benchmarks
-│           └── tech-blog-writer/         ← Skill: tech blog post generator
-│               └── SKILL.md
+│           ├── tech-blog-writer/         ← Skill: tech blog post generator
+│           │   └── SKILL.md
+│           └── interview-prep-app/       ← Skill: tailored interview prep web app
+│               ├── SKILL.md
+│               └── assets/
+│                   └── template.html    ← Fixed-design app shell (CSS + JS engine)
 └── docs/
     ├── index.html                        ← Browsable marketplace dashboard
     └── examples/
@@ -237,10 +290,11 @@ Step-by-step instructions for Claude to follow when the skill is invoked.
 ```json
 {
   "name": "business-skills",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "skills": [
     "./skills/business-presentation",
     "./skills/tech-blog-writer",
+    "./skills/interview-prep-app",
     "./skills/your-skill-name"
   ]
 }
@@ -284,4 +338,4 @@ home-decoration business presentation generated from a brief description. Open i
 | Plugin             | `business-skills` (`plugins/business-skills`)            |
 | Plugin manifest    | `plugins/business-skills/.claude-plugin/plugin.json`     |
 | Scope (current)    | `project`                                                |
-| Skills count       | 2                                                        |
+| Skills count       | 3                                                        |
