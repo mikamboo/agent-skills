@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - "docs/**"
+      - "plugins/business-skills/.claude-plugin/plugin.json"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
 
@@ -26,6 +27,9 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+
+      - name: Publish plugin manifest for the dashboard
+        run: cp plugins/business-skills/.claude-plugin/plugin.json docs/plugin.json
 
       - uses: actions/configure-pages@v5
 

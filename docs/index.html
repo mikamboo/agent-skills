@@ -239,7 +239,7 @@
         <div class="sidebar-label">// Component type</div>
         <div class="filter-row enabled">
           <span class="filter-left"><span class="filter-dot" style="background: var(--skill); box-shadow: 0 0 6px var(--skill);"></span>Skills</span>
-          <span class="filter-count">2</span>
+          <span class="filter-count" id="skill-count-filter">2</span>
         </div>
         <div class="filter-row disabled">
           <span class="filter-left"><span class="filter-dot" style="background: #a78bfa;"></span>MCP Servers</span>
@@ -286,15 +286,15 @@
             <div class="trigger">plugins/business-skills</div>
             <p>Business productivity skills: presentation generation and tech blog writing.</p>
             <div class="badge-row">
-              <span class="badge accent">version 1.0.0</span>
-              <span class="badge accent">2 skills</span>
+              <span class="badge accent" id="plugin-version">version 2.0.0</span>
+              <span class="badge accent" id="plugin-skill-count">2 skills</span>
             </div>
           </div>
         </div>
       </section>
 
       <section id="skills">
-        <h2>Skills <span class="count">2</span></h2>
+        <h2>Skills <span class="count" id="skill-count">2</span></h2>
 
         <div class="skills-grid" id="skills-grid">
           <div class="card skill-card" data-name="business-presentation" data-desc="Turns any business idea description into a complete, investor-ready HTML presentation" data-category="business">
@@ -382,6 +382,15 @@ claude plugin update business-skills@smartb-skills-marketplace</span></pre>
     });
     emptyState.style.display = visible === 0 ? 'block' : 'none';
   }
+
+  // Counts come from the rendered cards; version from plugin.json (copied in by pages.yml).
+  var n = cards.length;
+  document.getElementById('skill-count').textContent = n;
+  document.getElementById('skill-count-filter').textContent = n;
+  document.getElementById('plugin-skill-count').textContent = n + ' skills';
+  fetch('./plugin.json').then(function (r) { return r.ok ? r.json() : null; }).then(function (m) {
+    if (m && m.version) document.getElementById('plugin-version').textContent = 'version ' + m.version;
+  }).catch(function () {});
 
   search.addEventListener('input', applyFilters);
   chips.forEach(function (chip) {

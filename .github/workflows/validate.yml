@@ -1,17 +1,12 @@
 name: Validate marketplace
 
+# No path filters: `validate` is a required check, so it must run on every PR
+# or docs-only PRs would wait forever on a check that never reports.
 on:
   pull_request:
-    paths:
-      - ".claude-plugin/**"
-      - "plugins/**"
-      - ".github/workflows/validate.yml"
   push:
     branches:
       - main
-    paths:
-      - ".claude-plugin/**"
-      - "plugins/**"
 
 jobs:
   validate:
@@ -19,8 +14,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
       - name: Install Claude Code CLI
-        run: npm install -g @anthropic-ai/claude-code
+        run: npm install -g @anthropic-ai/claude-code@2.1.288
 
       - name: Validate marketplace and plugin manifests
         run: claude plugin validate .

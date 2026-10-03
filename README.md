@@ -43,6 +43,19 @@ claude plugin update business-skills@smartb-skills-marketplace
 
 ---
 
+## Migrating from `kevatech-agent-skills`
+
+The marketplace was renamed to `smartb-skills-marketplace` (plugin `business-skills` is now v2.0.0), and the
+`skill-creator`, `pdf` and `frontend-design` skills were removed. To migrate:
+
+```bash
+claude plugin uninstall business-skills@kevatech-agent-skills
+claude plugin marketplace add ./
+claude plugin install business-skills@smartb-skills-marketplace --scope project
+```
+
+---
+
 ## Plugins
 
 ### `business-skills`
@@ -63,7 +76,7 @@ Next.js, Hugo, Jekyll, or any Markdown-based CMS.
 **What it produces:**
 
 | Element               | Content                                                              |
-| ---------------------- | -------------------------------------------------------------------- |
+| --------------------- | -------------------------------------------------------------------- |
 | YAML frontmatter      | title, description, date, tags, author                              |
 | Introduction          | 2–3 sentence hook stating the problem and what the post covers      |
 | Body sections         | `##` main sections + `###` subsections, sentence-case headings      |
@@ -113,7 +126,7 @@ presentation file. Open it in a browser and print to PDF.
 **What it produces:**
 
 | Section                 | Content                                        |
-| ------------------------ | ----------------------------------------------- |
+| ----------------------- | ---------------------------------------------- |
 | Executive Summary       | 4 KPIs + value proposition                     |
 | Company & Vision        | Mission, objectives, legal form                |
 | Market Opportunity      | TAM/SAM/SOM with sourced data + chart          |
@@ -132,7 +145,7 @@ presentation file. Open it in a browser and print to PDF.
 **Charts included (Chart.js):**
 
 | Chart                                   | Section               |
-| ----------------------------------------- | ----------------------- |
+| --------------------------------------- | --------------------- |
 | TAM / SAM / SOM horizontal bars         | Market Opportunity    |
 | Competitive positioning bars            | Competitive Landscape |
 | Revenue projection (3-year grouped bar) | Financial Projections |
@@ -180,10 +193,11 @@ agent-skills/
 ├── README.md                              ← This file — marketplace index
 ├── CLAUDE.md                              ← Project instructions for Claude
 ├── CONTRIBUTING.md                        ← How to add/update skills, versioning, PR workflow
-├── CODEOWNERS                             ← Required reviewers for manifest/plugin/CI changes
+├── CODEOWNERS                             ← Required reviewers for manifest, plugin, CI, docs and config changes
 ├── .github/
 │   └── workflows/
-│       └── validate.yml                  ← CI: `claude plugin validate .` on every PR
+│       ├── validate.yml                  ← CI: `claude plugin validate .` on every PR
+│       └── pages.yml                     ← Deploys docs/ to GitHub Pages on push to main
 ├── .claude/
 │   └── settings.json                     ← Project-level enabled plugins
 ├── .claude-plugin/

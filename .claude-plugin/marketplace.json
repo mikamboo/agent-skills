@@ -12,8 +12,7 @@
     {
       "name": "business-skills",
       "source": "./plugins/business-skills",
-      "description": "Business productivity skills including business presentation generation and tech blog writing",
-      "version": "1.0.0"
+      "description": "Business productivity skills including business presentation generation and tech blog writing"
     }
   ]
 }
