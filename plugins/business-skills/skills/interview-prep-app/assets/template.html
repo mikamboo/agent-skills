@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<!--
+  Interview Prep App: template shell (interview-prep-app skill).
+  Keep the <style> block and the <script> engine as-is. Only replace:
+    - {{LANG}}, {{TITLE}}, {{COMPANY}}, {{ROLE}}, {{CANDIDATE}}
+    - the content inside each <section> (one commented example per component)
+    - the QUIZ array and UI_LANG at the bottom of the script
+  Every placeholder is {{UPPER_SNAKE}}. Grep for "{{" before publishing: zero hits allowed.
+-->
+<html lang="{{LANG}}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{{TITLE}}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F2F4F3; --surface:#FFFFFF; --ink:#10263A; --muted:#566673; --rule:#D3DADE;
+  --go:#1E6B52; --go-soft:#E2F0EA; --risk:#A86A12; --risk-soft:#F7ECD9; --focus:#2F5FD0;
+  --serif:"Source Serif 4", Georgia, "Times New Roman", serif;
+  --sans:"Instrument Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1A24; --surface:#152431; --ink:#E6ECEF; --muted:#9AA9B4; --rule:#2A3B48;
+    --go:#5CC29B; --go-soft:#173A2F; --risk:#E0A84A; --risk-soft:#3A2D16; --focus:#8EAEFF;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1A24; --surface:#152431; --ink:#E6ECEF; --muted:#9AA9B4; --rule:#2A3B48;
+  --go:#5CC29B; --go-soft:#173A2F; --risk:#E0A84A; --risk-soft:#3A2D16; --focus:#8EAEFF;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16.5px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--focus)}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:3px}
+.app{display:grid;grid-template-columns:280px minmax(0,1fr);min-height:100vh}
+.rail{position:sticky;top:0;height:100vh;padding:32px 24px;border-right:1px solid var(--rule);background:var(--surface);overflow-y:auto}
+.rail h1{font-family:var(--serif);font-weight:600;font-size:1.25rem;line-height:1.25;margin:0 0 4px}
+.rail .sub{color:var(--muted);font-size:.875rem;margin:0 0 28px}
+.stages{list-style:none;margin:0;padding:0;position:relative}
+.stages::before{content:"";position:absolute;left:11px;top:14px;bottom:14px;width:2px;background:var(--rule)}
+.stages button{all:unset;cursor:pointer;display:grid;grid-template-columns:24px 1fr;gap:12px;align-items:center;padding:9px 6px 9px 0;width:100%;position:relative;color:var(--muted);font-size:.95rem}
+.stages button .dot{width:24px;height:24px;border-radius:50%;border:2px solid var(--rule);background:var(--surface);display:grid;place-items:center;font-size:.72rem;font-weight:600;color:var(--muted);position:relative;z-index:1}
+.stages button[aria-selected="true"]{color:var(--ink);font-weight:600}
+.stages button[aria-selected="true"] .dot{background:var(--ink);border-color:var(--ink);color:var(--surface)}
+.stages button.seen:not([aria-selected="true"]) .dot{border-color:var(--go);color:var(--go)}
+.stages button:hover{color:var(--ink)}
+.stages button:focus-visible{outline:2px solid var(--focus)}
+.rail .foot{margin-top:28px;padding-top:16px;border-top:1px solid var(--rule);font-size:.8rem;color:var(--muted)}
+main{padding:48px clamp(20px,5vw,72px) 96px;max-width:900px}
+section{display:none}
+section.active{display:block;animation:in .25s ease-out}
+@keyframes in{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){section.active{animation:none}}
+h2{font-family:var(--serif);font-size:clamp(1.8rem,3.4vw,2.4rem);line-height:1.15;font-weight:700;margin:0 0 8px;letter-spacing:-.01em}
+.lede{color:var(--muted);font-size:1.05rem;max-width:62ch;margin:0 0 32px}
+h3{font-family:var(--serif);font-size:1.3rem;font-weight:600;margin:36px 0 10px}
+p,li{max-width:70ch}
+ul{padding-left:1.2em}
+li{margin:4px 0}
+.small{font-size:.875rem;color:var(--muted)}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);margin:8px 0 12px}
+.facts div{background:var(--surface);padding:14px 16px}
+.facts b{display:block;font-family:var(--serif);font-size:1.35rem;font-weight:600}
+.facts span{font-size:.85rem;color:var(--muted)}
+.streams{counter-reset:s;list-style:none;padding:0}
+.streams li{counter-increment:s;position:relative;padding:14px 0 14px 44px;border-top:1px solid var(--rule);max-width:none}
+.streams li::before{content:counter(s);position:absolute;left:0;top:14px;width:28px;height:28px;border-radius:50%;background:var(--go-soft);color:var(--go);font-weight:600;display:grid;place-items:center;font-size:.85rem}
+.streams strong{display:block}
+.note{border-left:3px solid var(--risk);background:var(--risk-soft);padding:12px 16px;margin:16px 0;max-width:70ch}
+.note.go{border-color:var(--go);background:var(--go-soft)}
+blockquote.pitch{font-family:var(--serif);font-size:1.22rem;line-height:1.6;margin:0;padding:28px 32px;background:var(--surface);border:1px solid var(--rule);max-width:70ch}
+.timer{display:flex;align-items:center;gap:14px;margin:18px 0;flex-wrap:wrap}
+.btn{all:unset;cursor:pointer;padding:9px 16px;border:1px solid var(--ink);font-weight:500;font-size:.92rem;border-radius:4px;background:var(--surface);color:var(--ink)}
+.btn.primary{background:var(--ink);color:var(--surface)}
+.btn.go{border-color:var(--go);color:var(--go)}
+.btn.risk{border-color:var(--risk);color:var(--risk)}
+.btn:hover{filter:brightness(.95)}
+.btn:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+#clock{font-variant-numeric:tabular-nums;font-family:var(--serif);font-size:1.4rem}
+.star{display:grid;grid-template-columns:120px 1fr;border-top:1px solid var(--rule)}
+.star>div{padding:16px 0;border-bottom:1px solid var(--rule)}
+.star .k{font-family:var(--serif);font-weight:600;font-size:1.1rem}
+.todo{background:var(--risk-soft);color:var(--ink);padding:0 4px;border-radius:2px}
+details{border-top:1px solid var(--rule);padding:4px 0}
+details:last-of-type{border-bottom:1px solid var(--rule)}
+summary{cursor:pointer;padding:12px 28px 12px 0;font-weight:500;list-style:none;position:relative}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";position:absolute;right:4px;top:10px;font-size:1.2rem;color:var(--muted)}
+details[open] summary::after{content:"–"}
+details ul{margin:0 0 14px}
+.theme{font-size:.85rem;color:var(--go);font-weight:600;margin:40px 0 4px}
+.quiz{background:var(--surface);border:1px solid var(--rule);padding:28px;max-width:720px}
+.qmeta{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:.875rem;color:var(--muted);margin-bottom:12px}
+.bar{height:4px;background:var(--rule);margin-bottom:22px}
+.bar i{display:block;height:100%;background:var(--go);width:0;transition:width .3s}
+.qtext{font-family:var(--serif);font-size:1.3rem;line-height:1.4;margin:0 0 18px}
+.qans{display:none;border-top:1px solid var(--rule);padding-top:14px;margin-top:6px}
+.qans.show{display:block}
+.qactions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.score{display:flex;gap:24px;margin-top:22px;font-size:.92rem;flex-wrap:wrap}
+.score b{font-family:var(--serif);font-size:1.2rem}
+table{border-collapse:collapse;width:100%;font-size:.93rem}
+.tablewrap{overflow-x:auto;border:1px solid var(--rule);background:var(--surface)}
+th,td{text-align:left;vertical-align:top;padding:12px 14px;border-bottom:1px solid var(--rule)}
+th{font-weight:600;background:var(--paper)}
+td .lvl{display:inline-block;font-size:.78rem;font-weight:600;padding:1px 8px;border-radius:10px;margin-bottom:4px}
+.lvl.fort{background:var(--go-soft);color:var(--go)}
+.lvl.part{background:var(--risk-soft);color:var(--risk)}
+.blind{border:2px solid var(--risk);padding:20px 24px;margin-top:28px;max-width:70ch;background:var(--surface)}
+.blind h3{margin-top:0}
+ol.ask li{margin:14px 0}
+ol.ask .why{display:block;color:var(--muted);font-size:.9rem}
+.proof{border-top:1px solid var(--rule);padding:14px 0}
+.proof b{display:block}
+.themebtn{all:unset;cursor:pointer;font-size:.8rem;color:var(--muted);text-decoration:underline}
+@media (max-width:860px){
+  .app{grid-template-columns:1fr}
+  .rail{position:sticky;top:0;height:auto;z-index:5;border-right:0;border-bottom:1px solid var(--rule);padding:calc(12px + env(safe-area-inset-top,0px)) 0 0}
+  .rail h1,.rail .sub{padding:0 16px}
+  .rail h1{font-size:1rem}
+  .rail .sub{margin-bottom:8px;font-size:.8rem}
+  .rail .foot{display:none}
+  .stages{display:flex;overflow-x:auto;gap:4px;padding:0 12px 10px;scrollbar-width:none}
+  .stages::before{display:none}
+  .stages button{grid-template-columns:22px auto;white-space:nowrap;padding:6px 10px 6px 6px;gap:6px;font-size:.88rem}
+  .stages button .dot{width:22px;height:22px}
+  main{padding:28px 18px 80px}
+  .star{grid-template-columns:1fr}
+  .star .k{padding-bottom:0;border-bottom:0}
+  blockquote.pitch{padding:20px;font-size:1.1rem}
+  .quiz{padding:20px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- Pipeline rail: the 8 sections read as stages promoted toward prod. Labels come from UI strings (data-i18n). -->
+  <nav class="rail" aria-label="Sections">
+    <h1>{{COMPANY}}</h1>
+    <p class="sub">{{ROLE}}<br>{{CANDIDATE}}</p>
+    <ol class="stages" role="tablist">
+      <li><button role="tab" data-t="brief" aria-selected="true"><span class="dot">1</span><span data-i18n="nav_brief"></span></button></li>
+      <li><button role="tab" data-t="pitch"><span class="dot">2</span><span data-i18n="nav_pitch"></span></button></li>
+      <li><button role="tab" data-t="star"><span class="dot">3</span><span data-i18n="nav_star"></span></button></li>
+      <li><button role="tab" data-t="qs"><span class="dot">4</span><span data-i18n="nav_qs"></span></button></li>
+      <li><button role="tab" data-t="quiz"><span class="dot">5</span><span data-i18n="nav_quiz"></span></button></li>
+      <li><button role="tab" data-t="map"><span class="dot">6</span><span data-i18n="nav_map"></span></button></li>
+      <li><button role="tab" data-t="ask"><span class="dot">7</span><span data-i18n="nav_ask"></span></button></li>
+      <li><button role="tab" data-t="proof"><span class="dot">8</span><span data-i18n="nav_proof"></span></button></li>
+    </ol>
+    <div class="foot"><span data-i18n="rail_foot"></span><br><br><button class="themebtn" id="themeToggle" data-i18n="theme_toggle"></button></div>
+  </nav>
+
+  <main>
+  <!-- 1. BRIEFING: headline = a claim about the company's distinctive nature, not its name. -->
+  <section id="brief" class="active" role="tabpanel">
+    <h2>{{BRIEF_HEADLINE}}</h2>
+    <p class="lede">{{BRIEF_LEDE}}</p>
+    <!-- Facts grid: 3-5 verified figures, each with a date or period in its label. -->
+    <div class="facts">
+      <div><b>{{FACT_VALUE}}</b><span>{{FACT_LABEL}}</span></div>
+    </div>
+    <p class="small">{{SOURCES_LINE}}</p>
+
+    <h3>{{BUSINESS_H3}}</h3>
+    <p>{{BUSINESS_PARAGRAPH}}</p>
+    <ul><li>{{BUSINESS_POINT}}</li></ul>
+    <!-- Green note: "what this means for the interview". Exactly one. -->
+    <div class="note go">{{WHAT_IT_MEANS}}</div>
+
+    <h3>{{ROLE_H3}}</h3>
+    <p>{{TEAM_PARAGRAPH}}</p>
+    <!-- Work-streams: mirror the posting's own missions, 3-6 items. Auto-numbered by CSS. -->
+    <ol class="streams">
+      <li><strong>{{STREAM_TITLE}}</strong>{{STREAM_DETAIL}}</li>
+    </ol>
+
+    <h3>{{STACK_H3}}</h3>
+    <!-- Decode every named tool: what it is, why it is there, and what to ask if unclear. -->
+    <ul><li><strong>{{TOOL}}</strong>: {{TOOL_DECODED}}</li></ul>
+
+    <!-- Optional amber note: sensitive context to know, not to raise. Remove if none. -->
+    <div class="note">{{SENSITIVE_CONTEXT}}</div>
+  </section>
+
+  <!-- 2. PITCH -->
+  <section id="pitch" role="tabpanel">
+    <h2>{{PITCH_HEADLINE}}</h2>
+    <p class="lede">{{PITCH_LEDE}}</p>
+    <!-- 4 paragraphs: who I am / most recent / flagship proof / why here, why now. -->
+    <blockquote class="pitch">{{PITCH_P1}}<br><br>{{PITCH_P2}}<br><br>{{PITCH_P3}}<br><br>{{PITCH_P4}}</blockquote>
+    <div class="timer">
+      <button class="btn primary" id="clockBtn"></button>
+      <span id="clock" aria-live="polite">0:00</span>
+      <span class="small" id="clockHint"></span>
+    </div>
+    <h3>{{PITCH_ALT_H3}}</h3>
+    <p>{{PITCH_ALT}}</p>
+    <div class="note">{{PITCH_WARNING}}</div>
+  </section>
+
+  <!-- 3. FLAGSHIP STAR: headline = the project's name, never "STAR". -->
+  <section id="star" role="tabpanel">
+    <h2>{{STAR_HEADLINE}}</h2>
+    <p class="lede">{{STAR_LEDE}}</p>
+    <div class="star">
+      <div class="k" data-i18n="star_s"></div><div>{{SITUATION}}</div>
+      <div class="k" data-i18n="star_t"></div><div>{{TASK}}</div>
+      <div class="k" data-i18n="star_a"></div><div><ul><li>{{ACTION}}</li></ul></div>
+      <!-- Results not quantified on the CV: wrap the request in .todo, never invent numbers. -->
+      <div class="k" data-i18n="star_r"></div><div>{{RESULT}} <span class="todo">{{RESULT_TODO}}</span></div>
+    </div>
+    <h3>{{BRIDGE_H3}}</h3>
+    <p>{{BRIDGE}}</p>
+    <h3>{{BACKUP_H3}}</h3>
+    <p>{{BACKUP_STORY}}</p>
+  </section>
+
+  <!-- 4. QUESTIONS: themes = the posting's requirement groups. Each question = details/summary + 2-4 bullets. -->
+  <section id="qs" role="tabpanel">
+    <h2>{{QS_HEADLINE}}</h2>
+    <p class="lede">{{QS_LEDE}}</p>
+    <p class="theme">{{THEME_NAME}}</p>
+    <details><summary>{{QUESTION}}</summary><ul><li>{{POINT}}</li></ul></details>
+  </section>
+
+  <!-- 5. QUIZ: markup is fixed; content comes from the QUIZ array below. -->
+  <section id="quiz" role="tabpanel">
+    <h2>{{QUIZ_HEADLINE}}</h2>
+    <p class="lede">{{QUIZ_LEDE}}</p>
+    <div class="quiz">
+      <div class="qmeta"><span id="qpos"></span><span id="qmode"></span></div>
+      <div class="bar"><i id="qbar"></i></div>
+      <p class="qtext" id="qtext"></p>
+      <div class="qans" id="qans"></div>
+      <div class="qactions" id="qactions"></div>
+      <div class="score"><span><span data-i18n="score_ok"></span> <b id="sOk">0</b></span><span><span data-i18n="score_ko"></span> <b id="sKo">0</b></span><span><span data-i18n="score_left"></span> <b id="sLeft">0</b></span></div>
+    </div>
+  </section>
+
+  <!-- 6. STRENGTHS: Strong rows first, then Partial. Proof column cites CV entries only. -->
+  <section id="map" role="tabpanel">
+    <h2>{{MAP_HEADLINE}}</h2>
+    <p class="lede">{{MAP_LEDE}}</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th data-i18n="th_req"></th><th data-i18n="th_asset"></th><th data-i18n="th_proof"></th></tr></thead>
+      <tbody>
+        <tr><td>{{REQUIREMENT}}</td><td><span class="lvl fort" data-i18n="lvl_strong"></span><br>{{ASSET}}</td><td>{{CV_PROOF}}</td></tr>
+        <tr><td>{{REQUIREMENT}}</td><td><span class="lvl part" data-i18n="lvl_partial"></span><br>{{ASSET}}</td><td>{{CV_PROOF}}</td></tr>
+      </tbody>
+    </table></div>
+    <!-- Exactly one blind-spot card: name it, give the one-sentence admission + transposition. -->
+    <div class="blind">
+      <h3>{{BLIND_TITLE}}</h3>
+      <p>{{BLIND_WHY}}</p>
+      <p><strong>{{BLIND_HOW_LABEL}}</strong> {{BLIND_SCRIPT}}</p>
+      <p class="small">{{BLIND_HOMEWORK}}</p>
+    </div>
+  </section>
+
+  <!-- 7. QUESTIONS TO ASK: 4-6, each tied to a work-stream via .why -->
+  <section id="ask" role="tabpanel">
+    <h2>{{ASK_HEADLINE}}</h2>
+    <p class="lede">{{ASK_LEDE}}</p>
+    <ol class="ask">
+      <li>{{QUESTION_TO_ASK}}<span class="why">{{WHY_IT_LANDS}}</span></li>
+    </ol>
+  </section>
+
+  <!-- 8. PROOF POINTS: only verified items get links; unverified ones say so. -->
+  <section id="proof" role="tabpanel">
+    <h2>{{PROOF_HEADLINE}}</h2>
+    <p class="lede">{{PROOF_LEDE}}</p>
+    <div class="proof"><b>{{PROOF_TITLE}}</b>{{PROOF_DETAIL}}<br><a href="{{VERIFIED_URL}}" target="_blank" rel="noopener">{{LINK_LABEL}}</a></div>
+    <div class="note go">{{PROOF_PRIORITY}}</div>
+  </section>
+  </main>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  // ---- Content to fill ---------------------------------------------------
+  const UI_LANG = "{{UI_LANG}}"; // "fr" or "en": language of the job posting
+  const QUIZ = [
+    // 10-15 items, subset of section 4, architecture/judgement over trivia.
+    {q:"{{QUIZ_QUESTION}}", a:["{{KEY_POINT}}"]}
+  ];
+  const PITCH_MIN = 35, PITCH_MAX = 50; // seconds
+
+  // ---- Interface strings (do not edit per brief) -------------------------
+  const UI = {
+    en:{nav_brief:"Briefing",nav_pitch:"Pitch",nav_star:"Flagship story",nav_qs:"Likely questions",nav_quiz:"Quiz",nav_map:"Strengths",nav_ask:"Questions to ask",nav_proof:"Proof points",
+        rail_foot:"Each stage you clear turns green, like a change promoted to prod.",theme_toggle:"Switch light / dark",
+        star_s:"Situation",star_t:"Task",star_a:"Action",star_r:"Result",
+        th_req:"Requirement",th_asset:"Your asset",th_proof:"Proof",lvl_strong:"Strong",lvl_partial:"Partial",
+        score_ok:"Got it",score_ko:"To review",score_left:"Remaining",
+        t_start:"Start timer",t_stop:"Stop",t_restart:"Restart timer",t_target:(a,b)=>`Target: between ${fmt(a)} and ${fmt(b)}`,
+        t_short:"A bit short: develop the bridge to the role.",t_long:"Too long: trim the career part.",t_ok:"Good length.",
+        q_pos:(i,n)=>`Question ${i} / ${n}`,q_all:"All questions",q_rev:"Questions to review",q_show:"Show key points",q_ok:"Got it",q_ko:"To review",
+        q_done:"Done",q_perfect:"Everything is solid. Run it once more the day before the interview.",
+        q_left:k=>`${k} ${k>1?"questions need":"question needs"} another pass. Replay them now.`,q_replay:"Replay questions to review",q_restart:"Start over"},
+    fr:{nav_brief:"Briefing",nav_pitch:"Pitch",nav_star:"Expérience clé",nav_qs:"Questions",nav_quiz:"Quiz",nav_map:"Atouts",nav_ask:"Questions à poser",nav_proof:"Faits d'armes",
+        rail_foot:"Chaque étape franchie passe au vert, comme un changement promu vers la prod.",theme_toggle:"Basculer clair / sombre",
+        star_s:"Situation",star_t:"Tâche",star_a:"Action",star_r:"Résultat",
+        th_req:"Exigence",th_asset:"Ton atout",th_proof:"Preuve",lvl_strong:"Fort",lvl_partial:"Partiel",
+        score_ok:"Acquis",score_ko:"À revoir",score_left:"Restantes",
+        t_start:"Lancer le chrono",t_stop:"Arrêter",t_restart:"Relancer le chrono",t_target:(a,b)=>`Cible : entre ${fmt(a)} et ${fmt(b)}`,
+        t_short:"Un peu court : développe le pont vers le poste.",t_long:"Trop long : coupe dans le parcours.",t_ok:"Bonne durée.",
+        q_pos:(i,n)=>`Question ${i} / ${n}`,q_all:"Toutes les questions",q_rev:"Questions à revoir",q_show:"Afficher les points clés",q_ok:"Acquis",q_ko:"À revoir",
+        q_done:"Terminé",q_perfect:"Tout est acquis. Refais un passage la veille de l'entretien.",
+        q_left:k=>`${k} ${k>1?"questions sont":"question est"} à revoir. Repasse-les maintenant.`,q_replay:"Revoir les questions à revoir",q_restart:"Recommencer tout"}
+  };
+  function fmt(s){ return Math.floor(s/60)+":"+String(s%60).padStart(2,"0"); }
+  const T = UI[UI_LANG] || UI.en;
+  document.querySelectorAll("[data-i18n]").forEach(n=>{ const v=T[n.dataset.i18n]; if (typeof v==="string") n.textContent=v; });
+
+  // ---- Tabs ---------------------------------------------------------------
+  const tabs = Array.from(document.querySelectorAll(".stages button"));
+  const panels = Array.from(document.querySelectorAll("main section"));
+  function show(id){
+    tabs.forEach(t=>{
+      const on = t.dataset.t === id;
+      if (t.getAttribute("aria-selected")==="true" && !on) t.classList.add("seen");
+      t.setAttribute("aria-selected", on ? "true" : "false");
+      if (on) t.scrollIntoView({block:"nearest", inline:"center"});
+    });
+    panels.forEach(p=>p.classList.toggle("active", p.id === id));
+    window.scrollTo({top:0});
+  }
+  tabs.forEach(t=>t.addEventListener("click",()=>show(t.dataset.t)));
+
+  // ---- Theme (in memory only) ----------------------------------------------
+  const root = document.documentElement;
+  document.getElementById("themeToggle").addEventListener("click",()=>{
+    const dark = root.dataset.theme ? root.dataset.theme==="dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+    root.dataset.theme = dark ? "light" : "dark";
+  });
+
+  // ---- Pitch timer ---------------------------------------------------------
+  let t0=null, iv=null;
+  const clock=document.getElementById("clock"), cbtn=document.getElementById("clockBtn"), hint=document.getElementById("clockHint");
+  cbtn.textContent=T.t_start; hint.textContent=T.t_target(PITCH_MIN,PITCH_MAX);
+  cbtn.addEventListener("click",()=>{
+    if (iv){
+      clearInterval(iv); iv=null; cbtn.textContent=T.t_restart;
+      const s=Math.round((Date.now()-t0)/1000);
+      hint.textContent = s<PITCH_MIN ? T.t_short : s>PITCH_MAX ? T.t_long : T.t_ok;
+      return;
+    }
+    t0=Date.now(); cbtn.textContent=T.t_stop; hint.textContent=T.t_target(PITCH_MIN,PITCH_MAX);
+    iv=setInterval(()=>{ clock.textContent=fmt(Math.floor((Date.now()-t0)/1000)); },250);
+  });
+
+  // ---- Quiz engine (state in memory, never browser storage) ----------------
+  let order=QUIZ.map((_,i)=>i), pos=0, status=QUIZ.map(()=>null), reviewMode=false;
+  const el=id=>document.getElementById(id);
+  function updateScore(){
+    el("sOk").textContent=status.filter(s=>s==="ok").length;
+    el("sKo").textContent=status.filter(s=>s==="ko").length;
+    el("sLeft").textContent=order.length-Math.min(pos,order.length);
+    el("qbar").style.width=(order.length?Math.min(pos,order.length)/order.length*100:100)+"%";
+  }
+  function button(label,cls,fn){ const b=document.createElement("button"); b.className="btn "+(cls||""); b.textContent=label; b.addEventListener("click",fn); return b; }
+  function render(){
+    const actions=el("qactions"); actions.textContent="";
+    const ans=el("qans"); ans.classList.remove("show"); ans.textContent="";
+    updateScore();
+    if (pos>=order.length){
+      const ko=status.filter(s=>s==="ko").length;
+      el("qpos").textContent=T.q_done;
+      el("qtext").textContent= ko===0 ? T.q_perfect : T.q_left(ko);
+      if (ko>0) actions.appendChild(button(T.q_replay,"primary",startReview));
+      actions.appendChild(button(T.q_restart,"",restart));
+      return;
+    }
+    const i=order[pos];
+    el("qpos").textContent=T.q_pos(pos+1,order.length);
+    el("qmode").textContent=reviewMode?T.q_rev:T.q_all;
+    el("qtext").textContent=QUIZ[i].q;
+    const ul=document.createElement("ul");
+    QUIZ[i].a.forEach(t=>{ const li=document.createElement("li"); li.textContent=t; ul.appendChild(li); });
+    ans.appendChild(ul);
+    actions.appendChild(button(T.q_show,"primary",()=>{
+      ans.classList.add("show"); actions.textContent="";
+      actions.appendChild(button(T.q_ok,"go",()=>rate("ok")));
+      actions.appendChild(button(T.q_ko,"risk",()=>rate("ko")));
+    }));
+  }
+  function rate(s){ status[order[pos]]=s; pos++; render(); }
+  function startReview(){ order=status.map((s,i)=>s==="ko"?i:-1).filter(i=>i>=0); order.forEach(i=>status[i]=null); pos=0; reviewMode=true; render(); }
+  function restart(){ order=QUIZ.map((_,i)=>i); status=QUIZ.map(()=>null); pos=0; reviewMode=false; render(); }
+  render();
+})();
+</script>
+</body>
+</html>
