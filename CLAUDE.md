@@ -1,18 +1,21 @@
 # Claude Instructions for Agent Skills
 
-This is a **Claude Code skill marketplace** project with reusable AI capabilities for custom usage like business presentations and technical blog writing.
+This is a **Claude Code plugin marketplace** (`smartb-skills-marketplace`) with reusable AI capabilities
+for business presentations and technical blog writing.
 
 ## Project Context
 
-- **Type:** Claude Code Marketplace of reusable skills
-- **Location:** `./claude/skills/` — skill definitions live here
+- **Type:** Claude Code plugin marketplace, spec-compliant (`.claude-plugin/marketplace.json` at repo
+  root, one plugin with its own `.claude-plugin/plugin.json`)
+- **Plugin:** `business-skills` — lives in `plugins/business-skills/`
+- **Location:** `plugins/business-skills/skills/` — skill definitions live here
 - **Current skills:** `tech-blog-writer`, `business-presentation`
 - **Scope:** Project-level enabled in `.claude/settings.json`
 
 ## Working with Skills
 
 ### Skill Structure
-Each skill lives in `claude/skills/{skill-name}/` with:
+Each skill lives in `plugins/business-skills/skills/{skill-name}/` with:
 - `SKILL.md` — the complete instruction set for Claude to follow (this is the "brain" of the skill)
 - `assets/` — templates, examples, static content used in output
 - `references/` — reference docs loaded into context during execution
@@ -24,20 +27,27 @@ Each skill lives in `claude/skills/{skill-name}/` with:
 4. Skills detect input language automatically and respond in kind
 
 ### When Adding a New Skill
-1. Create `claude/skills/your-skill-name/SKILL.md` with YAML frontmatter and instructions
+1. Create `plugins/business-skills/skills/your-skill-name/SKILL.md` with YAML frontmatter and instructions
 2. Add any assets or references to subdirectories
-3. Update `claude/.claude-plugin/marketplace.json` to register the skill
-4. Update the README with usage examples
-5. Run `claude plugin update business-skills@kevatech-agent-skills` to reload
+3. Register it in `plugins/business-skills/.claude-plugin/plugin.json`'s `skills` array
+4. Bump `plugin.json`'s `version` (semver)
+5. Update `README.md` and `docs/index.html` with usage examples
+6. Run `claude plugin validate .` locally, then open a PR (see `CONTRIBUTING.md`) — CI runs the same
+   validation and a CODEOWNERS review is required before merge
+7. After merge, run `claude plugin update business-skills@smartb-skills-marketplace` to reload
 
 ## Key Files
 
 | File | Purpose |
 |------|---------|
 | `README.md` | Marketplace index and skill documentation |
+| `CONTRIBUTING.md` | How to add/update skills, versioning, PR workflow |
 | `.claude/settings.json` | Project-level plugin configuration |
-| `claude/.claude-plugin/marketplace.json` | Marketplace manifest |
-| `claude/skills/*/SKILL.md` | Skill definitions (core instructions for Claude) |
+| `.claude-plugin/marketplace.json` | Marketplace manifest |
+| `plugins/business-skills/.claude-plugin/plugin.json` | Plugin manifest (name, version, skills[]) |
+| `plugins/business-skills/skills/*/SKILL.md` | Skill definitions (core instructions for Claude) |
+| `docs/index.html` | Browsable marketplace dashboard |
+| `.github/workflows/validate.yml` | CI gate running `claude plugin validate .` on PRs |
 
 ## Code Quality Standards
 
@@ -53,18 +63,22 @@ Each skill lives in `claude/skills/{skill-name}/` with:
 # View registered plugins
 claude plugin list
 
-# Update skills after changes to marketplace or skill definitions
-claude plugin update business-skills@kevatech-agent-skills
+# Validate the marketplace and plugin manifests
+claude plugin validate .
+
+# Update skills after changes to the plugin or skill definitions
+claude plugin update business-skills@smartb-skills-marketplace
 
 # Install skills in another project
-claude plugin install business-skills@kevatech-agent-skills --scope project
+claude plugin install business-skills@smartb-skills-marketplace --scope project
 ```
 
-## Branch Convention
+## Branch & PR Convention
 
-Main branch: `main`
+Main branch: `main` — no direct pushes, all changes go through a pull request that must pass the
+`validate` CI check and a CODEOWNERS review (see `CONTRIBUTING.md`).
 Feature branches: `copilot/descriptor` (e.g., `copilot/add-tech-blog-writer-skill`)
 
 ---
 
-**Last updated:** 2026-03-16
+**Last updated:** 2026-09-18

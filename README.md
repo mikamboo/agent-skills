@@ -1,24 +1,28 @@
-# Agent Skills — Local Claude Marketplace
+# SmartB Skills Marketplace
 
-A personal collection of **Claude skills** — reusable AI capabilities invoked directly
-from any conversation with a simple command or natural language phrase.
+A company Claude Code plugin marketplace hosting reusable **Claude skills** — invoked directly from any
+conversation with a slash command or natural language.
+
+> Browsable version: open [`docs/index.html`](./docs/index.html) in a browser for a dashboard view of the
+> marketplace, plugins, and skills below.
 
 ---
 
 ## Quick Setup
 
-> Run once per machine. After that, skills are automatically available in every new project.
+> Run once per machine. After that, the plugin is automatically available in every new project you enable
+> it in.
 
 ```bash
 # 1. Clone the repo
 git clone https://github.com/mikamboo/agent-skills
 cd agent-skills
 
-# 2. Register the local marketplace (user-level, permanent)
+# 2. Register the marketplace (user-level, permanent)
 claude plugin marketplace add ./
 
-# 3. Install the skill pack into your current project
-claude plugin install business-skills@kevatech-agent-skills --scope project
+# 3. Install the plugin into your current project
+claude plugin install business-skills@smartb-skills-marketplace --scope project
 
 # 4. Verify
 claude plugin list
@@ -27,16 +31,29 @@ claude plugin list
 To make the skills available globally across all projects (instead of per-project):
 
 ```bash
-claude plugin install business-skills@kevatech-agent-skills --scope user
+claude plugin install business-skills@smartb-skills-marketplace --scope user
+```
+
+To pick up changes after a new release:
+
+```bash
+claude plugin marketplace update
+claude plugin update business-skills@smartb-skills-marketplace
 ```
 
 ---
 
-## Available Skills
+## Plugins
 
-### `tech-blog-writer`
+### `business-skills`
 
-> **Plugin:** `business-skills@kevatech-agent-skills`
+> **Marketplace:** `smartb-skills-marketplace`
+> **Source:** `./plugins/business-skills`
+
+Business productivity skills: presentation generation and tech blog writing.
+
+#### `tech-blog-writer`
+
 > **Trigger:** `/tech-blog-writer` or describe a blog post naturally
 
 **What it does:** Turns a topic, a rough content draft, and optional reference links or
@@ -46,7 +63,7 @@ Next.js, Hugo, Jekyll, or any Markdown-based CMS.
 **What it produces:**
 
 | Element               | Content                                                              |
-| --------------------- | -------------------------------------------------------------------- |
+| ---------------------- | -------------------------------------------------------------------- |
 | YAML frontmatter      | title, description, date, tags, author                              |
 | Introduction          | 2–3 sentence hook stating the problem and what the post covers      |
 | Body sections         | `##` main sections + `###` subsections, sentence-case headings      |
@@ -86,9 +103,8 @@ Write a how-to guide comparing Zod and Yup for form validation in a Next.js proj
 
 ---
 
-### `business-presentation`
+#### `business-presentation`
 
-> **Plugin:** `business-skills@kevatech-agent-skills`
 > **Trigger:** `/business-presentation` or describe a business idea naturally
 
 **What it does:** Turns any business idea description into a complete, investor-ready HTML
@@ -97,7 +113,7 @@ presentation file. Open it in a browser and print to PDF.
 **What it produces:**
 
 | Section                 | Content                                        |
-| ----------------------- | ---------------------------------------------- |
+| ------------------------ | ----------------------------------------------- |
 | Executive Summary       | 4 KPIs + value proposition                     |
 | Company & Vision        | Mission, objectives, legal form                |
 | Market Opportunity      | TAM/SAM/SOM with sourced data + chart          |
@@ -116,7 +132,7 @@ presentation file. Open it in a browser and print to PDF.
 **Charts included (Chart.js):**
 
 | Chart                                   | Section               |
-| --------------------------------------- | --------------------- |
+| ----------------------------------------- | ----------------------- |
 | TAM / SAM / SOM horizontal bars         | Market Opportunity    |
 | Competitive positioning bars            | Competitive Landscape |
 | Revenue projection (3-year grouped bar) | Financial Projections |
@@ -157,173 +173,46 @@ Open the generated `.html` in Chrome or Edge → `Ctrl+P` (or `Cmd+P`) → **Sav
 
 ---
 
-### `frontend-design`
-
-> **Plugin:** `business-skills@kevatech-agent-skills`
-> **Trigger:** `/frontend-design` or ask to build any web UI, component, or page
-
-**What it does:** Generates production-grade, visually distinctive frontend code — HTML/CSS/JS,
-React, Vue, or any web framework — with a bold, intentional aesthetic that avoids generic
-AI-slop patterns.
-
-**What it produces:**
-
-| Element            | Content                                                              |
-| ------------------ | -------------------------------------------------------------------- |
-| Working code       | HTML/CSS/JS, React, Vue, or as requested                            |
-| Aesthetic direction| One committed visual style: brutalist, editorial, retro-futuristic, luxury, etc. |
-| Typography         | Distinctive, characterful font pairings (never Inter/Arial/Roboto)  |
-| Motion & interaction | CSS animations and micro-interactions tuned to the aesthetic      |
-| Visual details     | Backgrounds, textures, shadows, gradients — never default solid fills |
-
-**Process:**
-
-1. Understands the purpose, audience, and any technical constraints
-2. Commits to a bold aesthetic direction before writing a single line
-3. Implements working, production-ready code with meticulous attention to detail
-
-**Usage examples:**
-
-```
-Build a landing page for a cybersecurity startup. Dark, technical, serious.
-```
-
-```
-Create a React dashboard component for fitness tracking data. Make it feel premium.
-```
-
-```
-/frontend-design — a personal portfolio page for a motion designer
-```
-
----
-
-### `pdf`
-
-> **Plugin:** `business-skills@kevatech-agent-skills`
-> **Trigger:** `/pdf` or any request involving a `.pdf` file
-
-**What it does:** Handles any PDF task — reading, extracting text/tables, merging, splitting,
-rotating, watermarking, form-filling, encryption, image extraction, and OCR on scanned PDFs.
-
-**Operations supported:**
-
-| Task                  | Description                                          |
-| --------------------- | ---------------------------------------------------- |
-| Read / extract        | Text, tables, images, and metadata from PDFs         |
-| Merge / split         | Combine multiple PDFs or split into individual pages |
-| Form fill             | Fill fillable fields or annotate non-fillable forms  |
-| Transform             | Rotate pages, add watermarks, encrypt/decrypt        |
-| OCR                   | Make scanned PDFs text-searchable                    |
-| Create                | Generate new PDFs programmatically                   |
-
-**Process:**
-
-1. Identifies the operation needed from the user's description
-2. Selects the appropriate Python library (`pypdf`, `reportlab`, `pdfplumber`, etc.)
-3. Uses helper scripts in `skills/pdf/scripts/` for complex operations
-4. Returns the result or writes the output file
-
-**Usage examples:**
-
-```
-Extract all text from report.pdf
-```
-
-```
-Merge invoice_jan.pdf, invoice_feb.pdf, and invoice_mar.pdf into one file.
-```
-
-```
-Fill in the form fields in application.pdf with my data: name = John, date = 2026-05-24
-```
-
----
-
-### `skill-creator`
-
-> **Plugin:** `business-skills@kevatech-agent-skills`
-> **Trigger:** `/skill-creator` or ask to create, improve, or benchmark a skill
-
-**What it does:** Guides the full lifecycle of skill development — from capturing intent and
-writing a first draft, to running evaluations, iterating on results, and optimising the
-skill's trigger description.
-
-**What it supports:**
-
-| Task                    | Description                                                     |
-| ----------------------- | --------------------------------------------------------------- |
-| Create from scratch     | Interview user, draft SKILL.md, write test cases                |
-| Improve existing skill  | Identify weaknesses, rewrite, re-evaluate                       |
-| Run evals               | Execute test prompts and review qualitative + quantitative results |
-| Benchmark               | Measure performance with variance analysis across multiple runs |
-| Optimise description    | Improve the skill's trigger description for better activation   |
-
-**Process:**
-
-1. Assesses where the user is in the skill lifecycle
-2. Asks targeted questions about intent, inputs, outputs, and success criteria
-3. Drafts or edits the `SKILL.md`, writes test prompts, runs evaluations
-4. Uses `skills/skill-creator/scripts/` for benchmarking and report generation
-5. Iterates until the skill meets the quality bar
-
-**Usage examples:**
-
-```
-I want to create a skill that summarises meeting transcripts.
-```
-
-```
-My tech-blog-writer skill isn't triggering reliably — help me fix the description.
-```
-
-```
-/skill-creator — run a full benchmark on the business-presentation skill
-```
-
----
-
 ## Repository Structure
 
 ```
 agent-skills/
 ├── README.md                              ← This file — marketplace index
-├── CLAUDE.md                             ← Project instructions for Claude
+├── CLAUDE.md                              ← Project instructions for Claude
+├── CONTRIBUTING.md                        ← How to add/update skills, versioning, PR workflow
+├── CODEOWNERS                             ← Required reviewers for manifest/plugin/CI changes
+├── .github/
+│   └── workflows/
+│       └── validate.yml                  ← CI: `claude plugin validate .` on every PR
 ├── .claude/
 │   └── settings.json                     ← Project-level enabled plugins
-├── .claude-plugin/                        ← Marketplace root (compliant with plugin spec)
-│   └── marketplace.json                  ← Marketplace manifest (kevatech-agent-skills)
-├── out/                                   ← Generated output files
-└── skills/                               ← All skill definitions
-    ├── business-presentation/            ← Skill: business presentation generator
-    │   ├── SKILL.md                      ← Skill instructions (read by Claude)
-    │   ├── assets/
-    │   │   └── template.html            ← HTML/CSS/Chart.js presentation template
-    │   └── references/
-    │       ├── sections-guide.md        ← Section content guidelines + colour themes
-    │       └── user-info-guide.md       ← Info extraction + sector financial benchmarks
-    ├── tech-blog-writer/                 ← Skill: tech blog post generator
-    │   └── SKILL.md
-    ├── frontend-design/                  ← Skill: production-grade frontend UI generator
-    │   └── SKILL.md
-    ├── pdf/                              ← Skill: PDF read/write/form-fill operations
-    │   ├── SKILL.md
-    │   ├── reference.md
-    │   ├── forms.md
-    │   └── scripts/                     ← Helper Python scripts for PDF tasks
-    └── skill-creator/                    ← Skill: create and iterate on new skills
-        ├── SKILL.md
-        ├── agents/
-        ├── assets/
-        ├── references/
-        └── scripts/
+├── .claude-plugin/
+│   └── marketplace.json                  ← Marketplace manifest (smartb-skills-marketplace)
+├── plugins/
+│   └── business-skills/                  ← Plugin: business productivity skills
+│       ├── .claude-plugin/
+│       │   └── plugin.json               ← Plugin manifest (name, version, skills[])
+│       └── skills/
+│           ├── business-presentation/    ← Skill: business presentation generator
+│           │   ├── SKILL.md              ← Skill instructions (read by Claude)
+│           │   ├── assets/
+│           │   │   └── template.html    ← HTML/CSS/Chart.js presentation template
+│           │   └── references/
+│           │       ├── sections-guide.md      ← Section content guidelines + colour themes
+│           │       └── user-info-guide.md     ← Info extraction + sector financial benchmarks
+│           └── tech-blog-writer/         ← Skill: tech blog post generator
+│               └── SKILL.md
+└── docs/
+    ├── index.html                        ← Browsable marketplace dashboard
+    └── examples/
+        └── sido-deco-presentation.html   ← Example output
 ```
 
 ---
 
 ## Adding a New Skill
 
-1. Create a directory under `skills/your-skill-name/`
+1. Create a directory under `plugins/business-skills/skills/your-skill-name/`
 2. Add a `SKILL.md` with YAML frontmatter:
 
 ```markdown
@@ -343,31 +232,26 @@ Step-by-step instructions for Claude to follow when the skill is invoked.
    - `assets/` — templates, example files, images used in output
    - `references/` — reference docs loaded into context during execution
 
-4. Register it in the marketplace manifest `.claude-plugin/marketplace.json`:
+4. Register it in the plugin manifest `plugins/business-skills/.claude-plugin/plugin.json`:
 
 ```json
 {
-  "name": "kevatech-agent-skills",
-  "plugins": [
-    {
-      "name": "business-skills",
-      "source": "./",
-      "skills": [
-        "./skills/business-presentation",
-        "./skills/tech-blog-writer",
-        "./skills/your-skill-name"
-      ]
-    }
+  "name": "business-skills",
+  "version": "1.1.0",
+  "skills": [
+    "./skills/business-presentation",
+    "./skills/tech-blog-writer",
+    "./skills/your-skill-name"
   ]
 }
 ```
 
-5. Update this README with the new skill entry.
+5. Bump the plugin's `version` (semver) and update this README and `docs/index.html`.
 
-6. Reinstall the plugin to pick up changes:
+6. Open a PR (see [`CONTRIBUTING.md`](./CONTRIBUTING.md)). Once merged, install owners pick up changes with:
 
 ```bash
-claude plugin update business-skills@kevatech-agent-skills
+claude plugin update business-skills@smartb-skills-marketplace
 ```
 
 ---
@@ -386,17 +270,18 @@ claude plugin update business-skills@kevatech-agent-skills
 
 ## Example Output
 
-[`out/sido-deco-presentation.html`](./skills/business-presentation/sido-deco-presentation.html) — a home-decoration business presentation
-generated from a brief description. Open in any browser.
+[`docs/examples/sido-deco-presentation.html`](./docs/examples/sido-deco-presentation.html) — a
+home-decoration business presentation generated from a brief description. Open in any browser.
 
 ---
 
 ## Marketplace Info
 
-| Field            | Value                                    |
-| ---------------- | ---------------------------------------- |
-| Marketplace name | `kevatech-agent-skills`                  |
-| Plugin pack      | `business-skills`                        |
-| Manifest         | `.claude-plugin/marketplace.json`        |
-| Scope (current)  | `project`                                |
-| Skills count     | 5                                        |
+| Field              | Value                                                    |
+| ------------------- | --------------------------------------------------------- |
+| Marketplace name   | `smartb-skills-marketplace`                              |
+| Manifest           | `.claude-plugin/marketplace.json`                        |
+| Plugin             | `business-skills` (`plugins/business-skills`)            |
+| Plugin manifest    | `plugins/business-skills/.claude-plugin/plugin.json`     |
+| Scope (current)    | `project`                                                |
+| Skills count       | 2                                                        |
