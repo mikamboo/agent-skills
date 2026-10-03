@@ -5,6 +5,7 @@ on:
     paths:
       - ".claude-plugin/**"
       - "plugins/**"
+      - "scripts/**"
       - ".github/workflows/validate.yml"
   push:
     branches:
@@ -24,3 +25,6 @@ jobs:
 
       - name: Validate marketplace and plugin manifests
         run: claude plugin validate .
+
+      - name: Check skill descriptions are under 1024 characters
+        run: python3 scripts/check_skill_descriptions.py

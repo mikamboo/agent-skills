@@ -11,9 +11,11 @@
    - `major` — breaking change (skill removed/renamed, trigger behavior changes significantly)
 4. Update `README.md` and `docs/index.html` with the new/changed skill's description, triggers, and
    usage examples — both are kept in sync by hand since the marketplace is small.
-5. Validate locally before opening a PR:
+5. Keep each skill's `description` frontmatter under 1024 characters (enforced in CI).
+6. Validate locally before opening a PR:
    ```bash
    claude plugin validate .
+   python3 scripts/check_skill_descriptions.py
    ```
 
 ## PR workflow
