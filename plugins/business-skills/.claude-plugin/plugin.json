@@ -2,13 +2,14 @@
   "name": "business-skills",
   "displayName": "Business Skills",
   "version": "2.0.0",
-  "description": "Business productivity skills: presentation generation and tech blog writing",
+  "description": "Business productivity skills: presentation generation, tech blog writing and interview prep",
   "author": {
     "name": "michael",
     "email": "michael@smartbamboo.net"
   },
   "skills": [
     "./skills/business-presentation",
-    "./skills/tech-blog-writer"
+    "./skills/tech-blog-writer",
+    "./skills/interview-prep-app"
   ]
 }
