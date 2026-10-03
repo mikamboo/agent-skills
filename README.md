@@ -3,8 +3,8 @@
 A company Claude Code plugin marketplace hosting reusable **Claude skills** — invoked directly from any
 conversation with a slash command or natural language.
 
-> Browsable version: open [`docs/index.html`](./docs/index.html) in a browser for a dashboard view of the
-> marketplace, plugins, and skills below.
+> **Site:** [mikamboo.github.io/agent-skills](https://mikamboo.github.io/agent-skills/) — a browsable
+> dashboard of the marketplace, plugins, and skills below (source: [`docs/index.html`](./docs/index.html)).
 
 ---
 
