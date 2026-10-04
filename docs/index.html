@@ -179,6 +179,20 @@
   }
   .badge.accent { color: var(--accent); background: rgba(0, 229, 255, 0.1); border-color: rgba(0, 229, 255, 0.35); }
 
+  /* Skill cards: fixed-height content blocks so every card lays out identically.
+     Long text is clamped; short text is padded to the same block height. */
+  .skill-card { display: flex; flex-direction: column; }
+  .skill-card .card-body { display: flex; flex-direction: column; flex: 1; }
+  .skill-card h3, .skill-card .trigger { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .skill-card p, .skill-card li, .skill-card .example {
+    display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.5;
+  }
+  .skill-card p { -webkit-line-clamp: 5; line-clamp: 5; height: 7.5em; }
+  .skill-card ul { height: calc(3 * (3em + 4px)); }
+  .skill-card li { -webkit-line-clamp: 2; line-clamp: 2; height: 3em; }
+  .skill-card .badge-row { height: 26px; overflow: hidden; align-content: flex-start; }
+  .skill-card .example { -webkit-line-clamp: 3; line-clamp: 3; height: calc(4.5em + 20px); margin-top: auto; box-sizing: content-box; }
+
   .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
 
   .empty-state {
