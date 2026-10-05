@@ -1,4 +1,8 @@
-# Require review on changes to the marketplace manifest, plugin definitions, and CI.
+# Require review on changes to the marketplace manifest, plugin definitions, CI, and trust-sensitive config.
 /.claude-plugin/ @mikamboo
 /plugins/ @mikamboo
 /.github/ @mikamboo
+/.claude/ @mikamboo
+/docs/ @mikamboo
+/CLAUDE.md @mikamboo
+/CODEOWNERS @mikamboo
