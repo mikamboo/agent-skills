@@ -9,7 +9,7 @@ for business presentations and technical blog writing.
   root, one plugin with its own `.claude-plugin/plugin.json`)
 - **Plugin:** `business-skills` — lives in `plugins/business-skills/`
 - **Location:** `plugins/business-skills/skills/` — skill definitions live here
-- **Current skills:** `tech-blog-writer`, `business-presentation`, `interview-prep-app`
+- **Current skills:** `tech-blog-writer`, `business-presentation`, `interview-prep-app`, `prompter`
 - **Scope:** Project-level enabled in `.claude/settings.json`
 
 ## Working with Skills

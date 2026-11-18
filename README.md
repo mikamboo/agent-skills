@@ -63,7 +63,7 @@ claude plugin install business-skills@smartb-skills-marketplace --scope project
 > **Marketplace:** `smartb-skills-marketplace`
 > **Source:** `./plugins/business-skills`
 
-Business productivity skills: presentation generation, tech blog writing and interview prep.
+Business productivity skills: presentation generation, tech blog writing, interview prep and prompt engineering.
 
 #### `tech-blog-writer`
 
@@ -234,6 +234,50 @@ Update my interview prep app: my CV changed, and translate it to English.
 
 ---
 
+#### `prompter`
+
+> **Trigger:** `/prompter` or ask for a prompt for another AI (« fais-moi un prompt pour… »)
+
+**What it does:** Turns any request into an optimized, ready-to-paste prompt for the target AI —
+text and code models (Claude, ChatGPT, Gemini, Mistral), image (Midjourney, GPT Image, Flux,
+Stable Diffusion), video (Sora, Veo, Runway, Kling) or audio (Suno, ElevenLabs). It writes the
+prompt; it never performs the task itself.
+
+**Process:**
+
+1. Silently analyses the goal, deliverable, audience, constraints and modality
+2. Optimizes for the named tool, or writes a portable prompt for the modality
+3. Asks 1–5 numbered questions with defaults only when missing info would change the result
+   (reply `go` to keep the defaults)
+4. Writes the prompt using shared best practices plus the modality's rules
+   (`references/texte-code.md`, `image.md`, `video.md`, `audio.md`)
+5. Re-reads it as the target AI would, without context, and trims the superfluous
+
+**Output:** the prompt alone, in a code block (plus a second block for a negative prompt,
+parameters or a system prompt when the tool has a separate field). Text/code prompts follow the
+request's language; image, video and audio prompts are in English, keeping on-screen or spoken
+text in its original language.
+
+**Usage examples:**
+
+```
+Fais-moi un prompt Midjourney pour une affiche de concert de jazz, format A3.
+```
+
+```
+Explique la photosynthèse à mon fils de 10 ans — donne-moi le prompt pour ChatGPT.
+```
+
+```
+/prompter — une vidéo d'un renard qui court dans la neige
+```
+
+```
+Improve this system prompt for my customer-support GPT: [paste prompt]
+```
+
+---
+
 ## Repository Structure
 
 ```
@@ -265,10 +309,17 @@ agent-skills/
 │           │       └── user-info-guide.md     ← Info extraction + sector financial benchmarks
 │           ├── tech-blog-writer/         ← Skill: tech blog post generator
 │           │   └── SKILL.md
-│           └── interview-prep-app/       ← Skill: tailored interview prep web app
+│           ├── interview-prep-app/       ← Skill: tailored interview prep web app
+│           │   ├── SKILL.md
+│           │   └── assets/
+│           │       └── template.html    ← Fixed-design app shell (CSS + JS engine)
+│           └── prompter/                 ← Skill: optimized prompts for any generative AI
 │               ├── SKILL.md
-│               └── assets/
-│                   └── template.html    ← Fixed-design app shell (CSS + JS engine)
+│               └── references/
+│                   ├── texte-code.md    ← Text/code models, system prompts, agents
+│                   ├── image.md         ← Image generation and editing
+│                   ├── video.md         ← Video generation
+│                   └── audio.md         ← Music and voice
 └── docs/
     ├── index.html                        ← Browsable marketplace dashboard
     └── examples/
@@ -352,4 +403,4 @@ home-decoration business presentation generated from a brief description. Open i
 | Plugin             | `business-skills` (`plugins/business-skills`)            |
 | Plugin manifest    | `plugins/business-skills/.claude-plugin/plugin.json`     |
 | Scope (current)    | `project`                                                |
-| Skills count       | 3                                                        |
+| Skills count       | 4                                                        |

@@ -12,7 +12,7 @@
     {
       "name": "business-skills",
       "source": "./plugins/business-skills",
-      "description": "Business productivity skills including business presentation generation, tech blog writing and interview prep"
+      "description": "Business productivity skills including business presentation generation, tech blog writing, interview prep and prompt engineering"
     }
   ]
 }
